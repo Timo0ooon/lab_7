@@ -1,0 +1,15 @@
+[Client] help                                - Display help on available commands.
+[Server] info                                - Print information about the collection (type, initialization date, number of elements, etc.) to standard output.
+[Server] show                                - Print to standard output all the elements of the collection in string representation.
+[Server] insert {element}                    - Add a new element with the given key.
+[Server] update_by_id {element}              - Update the value of a collection element whose id is equal to the given one.
+[Server] remove_key {key}                    - Remove an element from a collection by its key.
+[Server] clear                               - Clear the collection.
+[Server] save                                - Save the collection to a file.
+[Hybrid] execute_script                      - Read and execute a script from the specified file. The script contains commands in the same form in which the user enters them interactively.
+[Client] exit                                - Exit the program (without saving to a file).
+[Server] remove_greater {key}                - Remove from the collection all elements greater than the given one.
+[Server] remove_lower {key}                  - Remove all elements from the collection that are smaller than the given one.
+[Server] average_of_impact_speed             - Display the average value of the impactSpeed field for all items in the collection.
+[Client] add_commands_to_file                - Add commands to file 'commands.csv'
+[Server] max_by_impact_speed                 - Print any object from the collection whose impactSpeed field value is the maximum.
