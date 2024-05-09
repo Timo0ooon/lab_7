@@ -14,7 +14,7 @@ import java.io.ObjectInputStream;
 import java.util.concurrent.Callable;
 
 
-public class ClientRequestReader implements Callable<Request> {
+public class ClientRequestReader<T> implements Callable<T> {
     private final byte[] data;
 
     public ClientRequestReader(byte[] data) {
@@ -22,12 +22,17 @@ public class ClientRequestReader implements Callable<Request> {
     }
 
     @Override
-    public Request call() {
+    public T call() {
        try (
                ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(this.data);
                ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
        ) {
-           return (Request) objectInputStream.readObject();
+
+           var request = objectInputStream.readObject();
+           if (request != null )
+               return (T) request;
+
+           return null;
        }
 
        catch (IOException | ClassNotFoundException e) {

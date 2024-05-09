@@ -1,10 +1,14 @@
 package com.ClientServerApp.ServerApplication.LocalManagers;
 
 import com.ClientServerApp.CollectionManager.CollectionManager;
+import com.ClientServerApp.CollectionManager.Other.Status;
 import com.ClientServerApp.Request.Request;
 import com.ClientServerApp.Response.Response;
+
+import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
@@ -30,26 +34,34 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-            this.buffer.flip();
-            byte[] data = new byte[this.bytes];
-            this.buffer.get(data);
+            if (this.collectionManager.getStatus() == Status.UNREGISTERED) {
+                RegistrationHandler registrationHandler = new RegistrationHandler(new SQLDatabaseManager().connect(), this.buffer, this.bytes);
+                registrationHandler.register();
+                this.collectionManager.setStatus(Status.REGISTERED);
+            }
+            else {
+                this.buffer.flip();
+                byte[] data = new byte[this.bytes];
+                this.buffer.get(data);
 
-            Future<Request> future = executorService.submit(new ClientRequestReader(data));
-            try {
-                executorService.awaitTermination(TIME_MS, TimeUnit.MILLISECONDS);
-                Request request = future.get();
-                if (request != null) {
-                    this.logger.info("Request received. Request: " + request + ". Client: " + this.client.getLocalAddress());
-                    Response response = this.collectionManager.getResponse(request);
+                Future<Request> future = executorService.submit(new ClientRequestReader<Request>(data));
+                try {
+                    executorService.awaitTermination(TIME_MS, TimeUnit.MILLISECONDS);
+                    Request request = future.get();
+                    if (request != null) {
+                        this.logger.info("Request received. Request: " + request + ". Client: " + this.client.getLocalAddress());
+                        Response response = this.collectionManager.getResponse(request);
 
-                    this.executorService.execute(new ClientResponseWriter(response, client));
-                    this.executorService.awaitTermination(TIME_MS, TimeUnit.MILLISECONDS);
-                    this.logger.info("Response sent! Response: " + response + ". Client: " + this.client.getLocalAddress());
+                        this.executorService.execute(new ClientResponseWriter(response, this.client));
+                        this.executorService.awaitTermination(TIME_MS, TimeUnit.MILLISECONDS);
+                        this.logger.info("Response sent! Response: " + response + ". Client: " + this.client.getLocalAddress());
+                    }
+
+                } catch (Exception e) {
+                    this.logger.error(e.toString());
                 }
             }
-            catch (Exception e) {
-                this.logger.error(e.toString());
-            }
+
         }
         catch (Exception e) {
             this.logger.error(e.toString());

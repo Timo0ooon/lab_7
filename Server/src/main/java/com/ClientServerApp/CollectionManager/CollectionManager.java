@@ -1,6 +1,7 @@
 package com.ClientServerApp.CollectionManager;
 
 import com.ClientServerApp.CollectionManager.Commands.*;
+import com.ClientServerApp.CollectionManager.Other.Status;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Request.Request;
 import com.ClientServerApp.Response.Response;
@@ -15,8 +16,10 @@ public class CollectionManager {
 
     private final HashMap<String, Command> commands = new HashMap<>();
     private final Hashtable<Integer, HumanBeing> collection;
+    private Status status;
 
-    public CollectionManager() {
+    public CollectionManager(Status status) {
+        this.status = status;
         this.collection = new Hashtable<>();
 
         this.commands.put("average_of_impact_speed", new AverageOfImpactSpeed());
@@ -45,6 +48,13 @@ public class CollectionManager {
 
 
         return response;
+    }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
     }
 }

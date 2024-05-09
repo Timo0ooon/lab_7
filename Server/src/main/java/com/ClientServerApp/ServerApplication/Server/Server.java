@@ -1,7 +1,9 @@
 package com.ClientServerApp.ServerApplication.Server;
 
 import com.ClientServerApp.CollectionManager.CollectionManager;
+import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
 import com.ClientServerApp.ServerApplication.LocalManagers.ClientHandler;
+import com.ClientServerApp.CollectionManager.Other.Status;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,13 +17,13 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.ConcurrentHashMap;
+
 
 public class Server {
     private final int port;
@@ -30,6 +32,8 @@ public class Server {
     private final Logger logger = LoggerFactory.getLogger(Server.class);
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final ConcurrentHashMap<SocketChannel, CollectionManager> clientHandler = new ConcurrentHashMap<>();
+    private final SQLDatabaseManager sqlDatabaseManager = new SQLDatabaseManager();
+    private int userCount = 0;
 
     public Server(String host, int port) {
         this.host = host;
@@ -59,6 +63,7 @@ public class Server {
                 while (keyIterator.hasNext()) {
                     SelectionKey key = keyIterator.next();
                     if (key.isAcceptable()) {
+                        this.userCount++;
 
                         ServerSocketChannel server = (ServerSocketChannel) key.channel();
                         SocketChannel client = server.accept();
@@ -66,11 +71,12 @@ public class Server {
                         if (client == null) {
                             continue;
                         }
-                        this.logger.info("Client connected! Client: " + client.getLocalAddress());
+                        this.logger.info("Client-" + this.userCount + " " + "connected! Client: " + client.getLocalAddress());
 
                         client.configureBlocking(false);
                         client.register(selector, SelectionKey.OP_READ);
-                        this.clientHandler.put(client, new CollectionManager());
+
+                        this.clientHandler.put(client, new CollectionManager(Status.UNREGISTERED));
                     }
 
                     if (key.isReadable()) {
@@ -88,13 +94,11 @@ public class Server {
                             else {
                                 Thread thread = new Thread(new ClientHandler(buffer, bytes, client, this.clientHandler.get(client)));
                                 thread.setName("Thread-" + client.getLocalAddress());
-                                this.logger.info("Thread started!");
                                 executorService.execute(
                                         thread
                                 );
 
                                 executorService.awaitTermination(TIME_MS, TimeUnit.MILLISECONDS);
-                                this.logger.info("Thread ended!");
                             }
                         }
 

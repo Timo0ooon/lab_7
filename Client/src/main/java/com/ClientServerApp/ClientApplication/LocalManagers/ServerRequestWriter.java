@@ -1,7 +1,5 @@
 package com.ClientServerApp.ClientApplication.LocalManagers;
 
-import com.ClientServerApp.Request.Request;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -10,7 +8,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 public class ServerRequestWriter {
-    public static void write(Request request, SocketChannel socketChannel) {
+    public <T> void write(T request, SocketChannel socketChannel) {
         try (
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);

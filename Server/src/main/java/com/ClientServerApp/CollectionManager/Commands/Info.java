@@ -20,7 +20,8 @@ public class Info implements Command{
         // Action
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append("Size of collection: ").append(collection.size());
+        stringBuilder.append("Type of collection: ").append(collection.getClass()).append("\n");
+        stringBuilder.append("Size of collection: ").append(collection.size()).append("\n");
 
         LocalDate dateOfCreation = collection.values().stream().map(HumanBeing::getCreationDate).min((date, date1) -> {
             if (date.equals(date1))

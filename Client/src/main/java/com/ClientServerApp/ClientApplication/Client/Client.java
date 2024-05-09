@@ -1,16 +1,15 @@
 package com.ClientServerApp.ClientApplication.Client;
 
-
 import com.ClientServerApp.ClientApplication.LocalManagers.ServerRequestWriter;
-import com.ClientServerApp.ClientApplication.LocalManagers.ServerResponseReader;
-import com.ClientServerApp.ClientApplication.Other.Container;
-import com.ClientServerApp.ClientApplication.Other.StringScraper;
-
+import com.ClientServerApp.ClientApplication.Other.MD5HashString;
+import com.ClientServerApp.CommandManager.CommandManager;
 import com.ClientServerApp.Environment;
 
+import com.ClientServerApp.Request.RegistrationRequest;
 import com.ClientServerApp.Request.Request;
 
 import com.ClientServerApp.Response.Response;
+import org.w3c.dom.ls.LSOutput;
 
 
 import java.io.IOException;
@@ -26,6 +25,7 @@ public class Client {
     private final int port;
     private final String host;
     private static final Scanner scanner = new Scanner(System.in);
+    private final CommandManager commandManager = new CommandManager();
 
     public Client(String host, int port) {
         this.host = host;
@@ -34,36 +34,31 @@ public class Client {
 
     public void run() {
         Request request;
+        RegistrationRequest registrationRequest;
         try (
                 SocketChannel socketChannel = SocketChannel.open();
         ) {
             socketChannel.connect(new InetSocketAddress(this.host, this.port));
+
+            System.out.print("Enter your name ");
+            String username = scanner.nextLine();
+            System.out.print("Enter password ");
+            String password = MD5HashString.createHashedPassword(scanner.nextLine());
+
+            registrationRequest = new RegistrationRequest(username, password);
+            new ServerRequestWriter().write(registrationRequest, socketChannel);
+
+
+
             while (!Thread.currentThread().isInterrupted()) {
                 try {
-
-
                     String clientMessage = scanner.nextLine();
-                    Container container = StringScraper.create(clientMessage);
-
-
-                    request = new Request(container.getCommand());
-                    request.setOptions(container.getOptions());
-                    request.setObjects(container.getObjects());
-
-                    ServerRequestWriter.write(request, socketChannel);
-
-                    ByteBuffer responseBuffer = ByteBuffer.allocate(1024);
-                    int bytesRead = socketChannel.read(responseBuffer);
-                    byte[] responseBytes = new byte[bytesRead];
-                    responseBuffer.flip();
-                    responseBuffer.get(responseBytes);
-
-                    Response response = ServerResponseReader.read(responseBytes);
-                    System.out.println(response);
-
+                    Response response = commandManager.find(clientMessage, socketChannel);
+                    if (response != null)
+                        System.out.println(response);
                 }
                 catch (Exception e) {
-                    System.out.println(e + "123123131232");
+                    System.out.println(e);
                 }
             }
     } catch (IOException e) {

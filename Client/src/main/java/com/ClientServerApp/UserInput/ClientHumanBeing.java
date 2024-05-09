@@ -92,7 +92,8 @@ public class ClientHumanBeing {
         while (true) {
             try {
                 System.out.print("Write impactSpeed: ");
-                this.humanBeing.setImpactSpeed(scanner.nextInt());
+                Integer userLine = Integer.parseInt(scanner.nextLine());
+                this.humanBeing.setImpactSpeed(userLine);
                 if (validator.test(this.humanBeing.getImpactSpeed())) {
                     break;
                 }

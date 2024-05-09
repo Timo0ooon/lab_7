@@ -12,7 +12,14 @@ public class Show implements Command{
         if (options != null || objects != null)
             return new Response("This command doesn't accept arguments!");
 
+        else if (collection.isEmpty())
+            return new Response("Collection is empty!");
+
         // Action
-        return new Response("Done!", collection);
+        StringBuilder stringBuilder = new StringBuilder("Collection:\n");
+        for (Integer key: collection.keySet()) {
+            stringBuilder.append(key).append(": ").append(collection.get(key)).append("\n");
+        }
+        return new Response("Done! " + stringBuilder);
     }
 }

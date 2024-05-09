@@ -1,5 +1,7 @@
 package com.ClientServerApp.CommandManager;
 
+import com.ClientServerApp.ClientApplication.LocalManagers.ServerRequestWriter;
+import com.ClientServerApp.ClientApplication.LocalManagers.ServerResponseReader;
 import com.ClientServerApp.CommandManager.Commands.Command;
 
 import com.ClientServerApp.CommandManager.Commands.Exit;
@@ -12,37 +14,43 @@ import com.ClientServerApp.Request.Request;
 import com.ClientServerApp.Response.Response;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
+import java.nio.ByteBuffer;
+import java.nio.channels.SocketChannel;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
+
 public class CommandManager {
     private final HashMap<String, Command> commands = new HashMap<>();
-    private final String fileName;
 
     public CommandManager() {
         commands.put("help", new Help());
         commands.put("exit", new Exit());
-        this.fileName = System.getenv("commands_file");
     }
 
-    public Response find(String userLine, ObjectInputStream objectInputStream, ObjectOutputStream objectOutputStream) throws IOException, ClassNotFoundException {
+    public Response find(String userLine, SocketChannel channel) throws IOException, ClassNotFoundException {
         userLine = userLine.toLowerCase().trim();
         Container container = StringScraper.create(userLine);
 
         if (container == null)
             return new Response(null, "Unknown syntax");
 
-        if (TypesOfCommands.commandsOnServer.contains(userLine)) {
+        if (TypesOfCommands.commandsOnServer.contains(container.getCommand())) {
             Request request = new Request(container.getCommand(), container.getOptions(), container.getObjects());
-            objectOutputStream.writeObject(request);
-            objectOutputStream.flush();
+            new ServerRequestWriter().write(request, channel);
 
-            return (Response) objectInputStream.readObject();
+            ByteBuffer responseBuffer = ByteBuffer.allocate(1024*1024);
+            int bytesRead = channel.read(responseBuffer);
+            byte[] responseBytes = new byte[bytesRead];
+            responseBuffer.flip();
+            responseBuffer.get(responseBytes);
+
+            return ServerResponseReader.read(responseBytes);
         }
 
-        if (TypesOfCommands.hybridCommands.contains(userLine)) {
+        else if (TypesOfCommands.hybridCommands.contains(container.getCommand())) {
             ArrayList<Request> requests = LoadScript.execute(System.getenv("commands_file"));
             if (requests == null)
                 return new Response(null, "Error!");
@@ -54,15 +62,26 @@ public class CommandManager {
                 }
 
                 else if (TypesOfCommands.commandsOnServer.contains(container.getCommand())) {
-                    objectOutputStream.writeObject(request);
-                    objectOutputStream.flush();
+                    new ServerRequestWriter().write(request, channel);
 
-                    return (Response) objectInputStream.readObject();
+                    ByteBuffer responseBuffer = ByteBuffer.allocate(1024*1024);
+                    int bytesRead = channel.read(responseBuffer);
+                    byte[] responseBytes = new byte[bytesRead];
+                    responseBuffer.flip();
+                    responseBuffer.get(responseBytes);
+
+                    return ServerResponseReader.read(responseBytes);
+
                 }
 
                 else
                     return new Response(null, "Unknown command!");
             }
+        }
+
+        else if (TypesOfCommands.commandsOnClient.contains(container.getCommand())) {
+            this.commands.get(userLine).execute();
+            return null;
         }
         return new Response(null, "Unknown command!");
     }
