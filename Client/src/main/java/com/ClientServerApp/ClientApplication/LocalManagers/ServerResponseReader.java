@@ -7,14 +7,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.channels.SocketChannel;
 
-public class ServerResponseReader {
+public class ServerResponseReader<T> {
 
-    public static Response read(byte[] data) {
+    public T read(byte[] data) {
         try (
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);
                 ObjectInputStream objectInputStream = new ObjectInputStream(byteArrayInputStream);
                 ) {
-            return (Response) objectInputStream.readObject();
+            return (T) objectInputStream.readObject();
         }
         catch (Exception e) {
             System.out.println(e);

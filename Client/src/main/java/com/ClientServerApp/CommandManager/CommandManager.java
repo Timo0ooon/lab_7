@@ -47,7 +47,7 @@ public class CommandManager {
             responseBuffer.flip();
             responseBuffer.get(responseBytes);
 
-            return ServerResponseReader.read(responseBytes);
+            return new ServerResponseReader<Response>().read(responseBytes);
         }
 
         else if (TypesOfCommands.hybridCommands.contains(container.getCommand())) {
@@ -70,7 +70,7 @@ public class CommandManager {
                     responseBuffer.flip();
                     responseBuffer.get(responseBytes);
 
-                    return ServerResponseReader.read(responseBytes);
+                    return new ServerResponseReader<Response>().read(responseBytes);
 
                 }
 

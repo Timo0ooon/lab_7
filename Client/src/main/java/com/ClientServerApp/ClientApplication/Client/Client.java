@@ -1,15 +1,15 @@
 package com.ClientServerApp.ClientApplication.Client;
 
 import com.ClientServerApp.ClientApplication.LocalManagers.ServerRequestWriter;
+import com.ClientServerApp.ClientApplication.LocalManagers.ServerResponseReader;
 import com.ClientServerApp.ClientApplication.Other.MD5HashString;
 import com.ClientServerApp.CommandManager.CommandManager;
 import com.ClientServerApp.Environment;
 
-import com.ClientServerApp.Request.RegistrationRequest;
-import com.ClientServerApp.Request.Request;
+import com.ClientServerApp.Request.AuthorizationRequest;
 
+import com.ClientServerApp.Response.AuthorizationResponse;
 import com.ClientServerApp.Response.Response;
-import org.w3c.dom.ls.LSOutput;
 
 
 import java.io.IOException;
@@ -33,22 +33,32 @@ public class Client {
     }
 
     public void run() {
-        Request request;
-        RegistrationRequest registrationRequest;
+        AuthorizationRequest registrationRequest;
         try (
                 SocketChannel socketChannel = SocketChannel.open();
         ) {
             socketChannel.connect(new InetSocketAddress(this.host, this.port));
 
-            System.out.print("Enter your name ");
-            String username = scanner.nextLine();
-            System.out.print("Enter password ");
-            String password = MD5HashString.createHashedPassword(scanner.nextLine());
+            while (!Thread.currentThread().isInterrupted()) {
+                System.out.print("Enter your name ");
+                String username = scanner.nextLine().trim();
+                System.out.print("Enter password ");
+                String password = MD5HashString.createHashedPassword(scanner.nextLine());
 
-            registrationRequest = new RegistrationRequest(username, password);
-            new ServerRequestWriter().write(registrationRequest, socketChannel);
+                registrationRequest = new AuthorizationRequest(username, password);
+                new ServerRequestWriter().write(registrationRequest, socketChannel);
 
 
+                ByteBuffer responseBuffer = ByteBuffer.allocate(1024*1024);
+                int bytesRead = socketChannel.read(responseBuffer);
+                byte[] data = new byte[bytesRead];
+                responseBuffer.flip();
+                responseBuffer.get(data);
+                AuthorizationResponse response = new ServerResponseReader<AuthorizationResponse>().read(data);
+                System.out.println(response);
+                if (response.isStatus())
+                    break;
+            }
 
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -61,7 +71,8 @@ public class Client {
                     System.out.println(e);
                 }
             }
-    } catch (IOException e) {
+        }
+        catch (IOException e) {
             System.out.println(e);
         }
     }

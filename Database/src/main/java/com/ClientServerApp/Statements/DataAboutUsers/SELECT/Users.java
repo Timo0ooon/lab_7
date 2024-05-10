@@ -1,4 +1,4 @@
-package com.ClientServerApp.Statements.UsersTable.SELECT;
+package com.ClientServerApp.Statements.DataAboutUsers.SELECT;
 
 import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
 import org.apache.commons.io.FileUtils;
@@ -18,14 +18,16 @@ import static java.io.File.separator;
 
 public class Users {
     private static final Logger logger = LoggerFactory.getLogger(Users.class);
-    public static ArrayList<String[]> get(Connection connection) {
-        try {
+    public static ArrayList<String[]> get() {
+        try (
+                Connection connection = new SQLDatabaseManager().connect();
+                ) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
                     new String(
                             FileUtils.readFileToByteArray(
                             new File("Database" + separator + "src" + separator + "main" + separator + "java" + separator +
-                                    "com" + separator + "ClientServerApp" + separator + "Statements" + separator + "UsersTable" + separator + "SELECT" + separator + "SelectRequest.sql")
+                                    "com" + separator + "ClientServerApp" + separator + "Statements" + separator + "DataAboutUsers" + separator + "SELECT" + separator + "SelectRequest.sql")
                             )
                     )
             );

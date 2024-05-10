@@ -10,12 +10,12 @@ import java.io.ObjectOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-public class ClientResponseWriter implements Runnable {
-    private final Response response;
+public class ClientResponseWriter <T> implements Runnable {
+    private final T response;
     private final SocketChannel client;
     private final Logger logger = LoggerFactory.getLogger(ClientResponseWriter.class);
 
-    public ClientResponseWriter(Response response, SocketChannel client) {
+    public ClientResponseWriter(T response, SocketChannel client) {
         this.response = response;
         this.client = client;
     }

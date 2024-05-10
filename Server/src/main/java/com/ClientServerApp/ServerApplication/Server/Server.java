@@ -1,7 +1,6 @@
 package com.ClientServerApp.ServerApplication.Server;
 
 import com.ClientServerApp.CollectionManager.CollectionManager;
-import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
 import com.ClientServerApp.ServerApplication.LocalManagers.ClientHandler;
 import com.ClientServerApp.CollectionManager.Other.Status;
 
@@ -32,7 +31,6 @@ public class Server {
     private final Logger logger = LoggerFactory.getLogger(Server.class);
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final ConcurrentHashMap<SocketChannel, CollectionManager> clientHandler = new ConcurrentHashMap<>();
-    private final SQLDatabaseManager sqlDatabaseManager = new SQLDatabaseManager();
     private int userCount = 0;
 
     public Server(String host, int port) {
@@ -76,7 +74,7 @@ public class Server {
                         client.configureBlocking(false);
                         client.register(selector, SelectionKey.OP_READ);
 
-                        this.clientHandler.put(client, new CollectionManager(Status.UNREGISTERED));
+                        this.clientHandler.put(client, new CollectionManager(Status.UNAUTHORIZED));
                     }
 
                     if (key.isReadable()) {

@@ -1,8 +1,10 @@
 package com.ClientServerApp.ServerApplication.LocalManagers;
 
 import com.ClientServerApp.CollectionManager.CollectionManager;
+import com.ClientServerApp.CollectionManager.Commands.Save;
 import com.ClientServerApp.CollectionManager.Other.Status;
 import com.ClientServerApp.Request.Request;
+import com.ClientServerApp.Response.AuthorizationResponse;
 import com.ClientServerApp.Response.Response;
 
 import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
+import java.sql.Connection;
 import java.util.concurrent.*;
 
 public class ClientHandler implements Runnable {
@@ -34,17 +37,25 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try {
-            if (this.collectionManager.getStatus() == Status.UNREGISTERED) {
-                RegistrationHandler registrationHandler = new RegistrationHandler(new SQLDatabaseManager().connect(), this.buffer, this.bytes);
-                registrationHandler.register();
-                this.collectionManager.setStatus(Status.REGISTERED);
+            if (this.collectionManager.getStatus() == Status.UNAUTHORIZED) {
+                Connection connection = new SQLDatabaseManager().connect();
+                this.collectionManager.setConnection(connection);
+                RegistrationHandler registrationHandler = new RegistrationHandler(connection, this.collectionManager, this.buffer, this.bytes);
+                if (registrationHandler.register()) {
+                    this.collectionManager.setStatus(Status.AUTHORIZED);
+                    this.executorService.execute(new ClientResponseWriter<>(new AuthorizationResponse(true), client));
+                }
+                else {
+                    this.executorService.execute(new ClientResponseWriter<>(new AuthorizationResponse(false), client));
+                }
+                this.executorService.awaitTermination(TIME_MS, TimeUnit.MILLISECONDS);
             }
             else {
                 this.buffer.flip();
                 byte[] data = new byte[this.bytes];
                 this.buffer.get(data);
 
-                Future<Request> future = executorService.submit(new ClientRequestReader<Request>(data));
+                Future<Request> future = executorService.submit(new ClientRequestReader<>(data));
                 try {
                     executorService.awaitTermination(TIME_MS, TimeUnit.MILLISECONDS);
                     Request request = future.get();
@@ -52,7 +63,7 @@ public class ClientHandler implements Runnable {
                         this.logger.info("Request received. Request: " + request + ". Client: " + this.client.getLocalAddress());
                         Response response = this.collectionManager.getResponse(request);
 
-                        this.executorService.execute(new ClientResponseWriter(response, this.client));
+                        this.executorService.execute(new ClientResponseWriter<>(response, this.client));
                         this.executorService.awaitTermination(TIME_MS, TimeUnit.MILLISECONDS);
                         this.logger.info("Response sent! Response: " + response + ". Client: " + this.client.getLocalAddress());
                     }

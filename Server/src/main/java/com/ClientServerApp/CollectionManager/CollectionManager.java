@@ -5,18 +5,23 @@ import com.ClientServerApp.CollectionManager.Other.Status;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Request.Request;
 import com.ClientServerApp.Response.Response;
+import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Hashtable;
 
 public class CollectionManager {
 
     private final HashMap<String, Command> commands = new HashMap<>();
-    private final Hashtable<Integer, HumanBeing> collection;
+    private Hashtable<Integer, HumanBeing> collection;
     private Status status;
+    private Connection connection;
+    private Save save = new Save();
+    private String userName;
 
     public CollectionManager(Status status) {
         this.status = status;
@@ -28,7 +33,7 @@ public class CollectionManager {
         this.commands.put("max_by_impact_speed", new MaxByImpactSpeed());
         this.commands.put("remove_greater", new RemoveGreater());
         this.commands.put("remove_lower", new RemoveLower());
-        this.commands.put("save", new Save());
+        this.commands.put("save", save);
         this.commands.put("show", new Show());
         this.commands.put("insert", new Insert());
         this.commands.put("update_by_id", new UpdateByID());
@@ -40,9 +45,12 @@ public class CollectionManager {
         HumanBeing[] objects = request.getObjects();
         Response response;
 
-        if (this.commands.containsKey(message))
+        if (this.commands.containsKey(message)) {
+            if (message.equals("save")) {
+                this.save.setUserName(this.userName);
+            }
             response = this.commands.get(message).execute(this.collection, options, objects);
-
+        }
         else
             response = new Response(null, "Command not found!");
 
@@ -50,11 +58,35 @@ public class CollectionManager {
         return response;
     }
 
-    public Status getStatus() {
-        return status;
-    }
+    public Status getStatus() { return status;}
 
     public void setStatus(Status status) {
         this.status = status;
     }
+
+    public Connection getConnection() { return connection; }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public Hashtable<Integer, HumanBeing> getCollection() {
+        return collection;
+    }
+
+    public void setCollection(Hashtable<Integer, HumanBeing> collection) {
+        this.collection = collection;
+    }
+
+    public Save getSave() { return save; }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setSave(Save save) { this.save = save; }
 }
