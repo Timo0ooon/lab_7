@@ -11,11 +11,6 @@ import java.util.Hashtable;
 public class Save implements Command {
     private String userName;
 
-
-    public Save() {}
-    public Save(String userName) {
-        this.userName = userName;
-    }
     @Override
     public Response execute(Hashtable<Integer, HumanBeing> collection, String[] options, HumanBeing[] objects) {
         if (options != null || objects != null)
@@ -24,10 +19,6 @@ public class Save implements Command {
         WriteData.write(this.userName, collection);
         return new Response("Saved!");
 
-    }
-
-    public String getUserName() {
-        return userName;
     }
 
     public void setUserName(String userName) {

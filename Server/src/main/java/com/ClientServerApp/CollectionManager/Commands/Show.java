@@ -16,7 +16,7 @@ public class Show implements Command{
             return new Response("Collection is empty!");
 
         // Action
-        StringBuilder stringBuilder = new StringBuilder("Collection:\n");
+        StringBuilder stringBuilder = new StringBuilder("\n[Collection]:\n");
         for (Integer key: collection.keySet()) {
             stringBuilder.append(key).append(": ").append(collection.get(key)).append("\n");
         }

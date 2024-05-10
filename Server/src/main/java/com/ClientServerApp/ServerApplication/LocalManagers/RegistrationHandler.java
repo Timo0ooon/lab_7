@@ -28,12 +28,10 @@ public class RegistrationHandler {
     private static final int TIME_MS = 100;
     private final ByteBuffer buffer;
     private final int bytes;
-    private final Connection connection;
     private final CollectionManager collectionManager;
     private final ExecutorService executorService = Executors.newCachedThreadPool();
     private final Logger logger = LoggerFactory.getLogger(RegistrationHandler.class);
-    public RegistrationHandler(Connection connection, CollectionManager collectionManager, ByteBuffer buffer, int bytes) {
-        this.connection = connection;
+    public RegistrationHandler(CollectionManager collectionManager, ByteBuffer buffer, int bytes) {
         this.collectionManager = collectionManager;
         this.buffer = buffer;
         this.bytes = bytes;

@@ -19,8 +19,7 @@ public class CollectionManager {
     private final HashMap<String, Command> commands = new HashMap<>();
     private Hashtable<Integer, HumanBeing> collection;
     private Status status;
-    private Connection connection;
-    private Save save = new Save();
+    private final Save save = new Save();
     private String userName;
 
     public CollectionManager(Status status) {
@@ -64,12 +63,6 @@ public class CollectionManager {
         this.status = status;
     }
 
-    public Connection getConnection() { return connection; }
-
-    public void setConnection(Connection connection) {
-        this.connection = connection;
-    }
-
     public Hashtable<Integer, HumanBeing> getCollection() {
         return collection;
     }
@@ -78,15 +71,8 @@ public class CollectionManager {
         this.collection = collection;
     }
 
-    public Save getSave() { return save; }
-
-    public String getUserName() {
-        return userName;
-    }
-
     public void setUserName(String userName) {
         this.userName = userName;
     }
 
-    public void setSave(Save save) { this.save = save; }
 }

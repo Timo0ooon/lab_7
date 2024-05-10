@@ -4,8 +4,8 @@ import com.ClientServerApp.ClientApplication.LocalManagers.ServerRequestWriter;
 import com.ClientServerApp.ClientApplication.LocalManagers.ServerResponseReader;
 import com.ClientServerApp.ClientApplication.Other.MD5HashString;
 import com.ClientServerApp.CommandManager.CommandManager;
-import com.ClientServerApp.Environment;
 
+import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Request.AuthorizationRequest;
 
 import com.ClientServerApp.Response.AuthorizationResponse;
@@ -19,6 +19,7 @@ import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+import java.util.Hashtable;
 import java.util.Scanner;
 
 public class Client {
@@ -35,50 +36,61 @@ public class Client {
     public void run() {
         AuthorizationRequest registrationRequest;
         try (
-                SocketChannel socketChannel = SocketChannel.open();
+                SocketChannel socketChannel = SocketChannel.open()
         ) {
             socketChannel.connect(new InetSocketAddress(this.host, this.port));
 
             while (!Thread.currentThread().isInterrupted()) {
-                System.out.print("Enter your name ");
+                System.out.print("[Message] Enter your name: ");
                 String username = scanner.nextLine().trim();
-                System.out.print("Enter password ");
+                System.out.print("[Message] Enter password: ");
                 String password = MD5HashString.createHashedPassword(scanner.nextLine());
 
                 registrationRequest = new AuthorizationRequest(username, password);
                 new ServerRequestWriter().write(registrationRequest, socketChannel);
 
 
-                ByteBuffer responseBuffer = ByteBuffer.allocate(1024*1024);
+                ByteBuffer responseBuffer = ByteBuffer.allocate(1024);
                 int bytesRead = socketChannel.read(responseBuffer);
                 byte[] data = new byte[bytesRead];
                 responseBuffer.flip();
                 responseBuffer.get(data);
                 AuthorizationResponse response = new ServerResponseReader<AuthorizationResponse>().read(data);
-                System.out.println(response);
                 if (response.isStatus())
                     break;
             }
 
             while (!Thread.currentThread().isInterrupted()) {
                 try {
+                    System.out.print("[Write message] ");
                     String clientMessage = scanner.nextLine();
                     Response response = commandManager.find(clientMessage, socketChannel);
-                    if (response != null)
-                        System.out.println(response);
+                    if (response != null) {
+                        String message = response.getMessage();
+                        Hashtable<Integer, HumanBeing> collection = response.getCollection();
+                        Object result = response.getObject();
+                        StringBuilder sentence = new StringBuilder();
+
+                        if (message != null)
+                            sentence.append("[Message] ").append(message);
+
+                        if (collection != null)
+                            sentence.append("[Collection] ").append(collection);
+
+                        if (result != null)
+                            sentence.append("[Result] ").append(result);
+
+                        System.out.println(sentence);
+                    }
+                    else {
+                        System.out.println("[Error] response is empty");
+                    }
                 }
-                catch (Exception e) {
-                    System.out.println(e);
-                }
+                catch (Exception ignored) {}
             }
         }
         catch (IOException e) {
-            System.out.println(e);
+            System.out.println("[Error] " + e);
         }
-    }
-
-    public static void main(String[] args) {
-        Client client = new Client(Environment.HOST, Environment.PORT);
-        client.run();
     }
 }

@@ -38,9 +38,7 @@ public class ClientHandler implements Runnable {
     public void run() {
         try {
             if (this.collectionManager.getStatus() == Status.UNAUTHORIZED) {
-                Connection connection = new SQLDatabaseManager().connect();
-                this.collectionManager.setConnection(connection);
-                RegistrationHandler registrationHandler = new RegistrationHandler(connection, this.collectionManager, this.buffer, this.bytes);
+                RegistrationHandler registrationHandler = new RegistrationHandler(this.collectionManager, this.buffer, this.bytes);
                 if (registrationHandler.register()) {
                     this.collectionManager.setStatus(Status.AUTHORIZED);
                     this.executorService.execute(new ClientResponseWriter<>(new AuthorizationResponse(true), client));
