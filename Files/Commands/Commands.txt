@@ -1,0 +1,3 @@
+help
+insert {1}
+show

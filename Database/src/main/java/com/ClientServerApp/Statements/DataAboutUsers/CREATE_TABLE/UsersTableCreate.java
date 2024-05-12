@@ -1,7 +1,6 @@
 package com.ClientServerApp.Statements.DataAboutUsers.CREATE_TABLE;
 
 import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
-import com.ClientServerApp.Statements.UsersTables.CREATE_TABLE.UserIDTableCreate;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -11,7 +10,7 @@ import java.sql.PreparedStatement;
 import static java.io.File.separator;
 
 public class UsersTableCreate {
-    public static boolean createTable() {
+    public static void createTable() {
         try {
             try (
                     Connection connection = new SQLDatabaseManager().connect();
@@ -25,12 +24,10 @@ public class UsersTableCreate {
                     )
                     ) {
 
-                return preparedStatement.executeUpdate() == 0;
+                preparedStatement.executeUpdate();
             }
 
         }
-        catch (Exception e) {
-            return false;
-        }
+        catch (Exception ignored) {}
     }
 }

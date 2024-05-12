@@ -23,13 +23,13 @@ import java.util.Hashtable;
 
 public class LoadDataFromUser {
     private static final Logger logger = LoggerFactory.getLogger(LoadDataFromUser.class);
-    public static Hashtable<Integer, HumanBeing> load(String userName) {
+    public static Hashtable<Integer, HumanBeing> load(int userID) {
         try (
                 Connection connection = new SQLDatabaseManager().connect();
         ) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(
-                    "SELECT * FROM " + userName
+                    "SELECT * FROM working_users WHERE working_users.user_id = " + userID
             );
 
             Hashtable<Integer, HumanBeing> collection = new Hashtable<>();

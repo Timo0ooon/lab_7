@@ -15,12 +15,13 @@ import java.util.HashMap;
 import java.util.Hashtable;
 
 public class CollectionManager {
-
     private final HashMap<String, Command> commands = new HashMap<>();
+    private final Save save = new Save();
+    private final Insert insert = new Insert();
+
     private Hashtable<Integer, HumanBeing> collection;
     private Status status;
-    private final Save save = new Save();
-    private String userName;
+    private int userID;
 
     public CollectionManager(Status status) {
         this.status = status;
@@ -34,7 +35,7 @@ public class CollectionManager {
         this.commands.put("remove_lower", new RemoveLower());
         this.commands.put("save", save);
         this.commands.put("show", new Show());
-        this.commands.put("insert", new Insert());
+        this.commands.put("insert", this.insert);
         this.commands.put("update_by_id", new UpdateByID());
         this.commands.put("remove_key", new RemoveKey());
     }
@@ -45,8 +46,9 @@ public class CollectionManager {
         Response response;
 
         if (this.commands.containsKey(message)) {
-            if (message.equals("save")) {
-                this.save.setUserName(this.userName);
+            if (message.equals("save") || message.equals("insert")) {
+                this.save.setUserID(this.userID);
+                this.insert.setUserID(this.userID);
             }
             response = this.commands.get(message).execute(this.collection, options, objects);
         }
@@ -71,8 +73,7 @@ public class CollectionManager {
         this.collection = collection;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+    public int getUserID() { return userID; }
 
+    public void setUserID(int userID) {this.userID = userID; }
 }

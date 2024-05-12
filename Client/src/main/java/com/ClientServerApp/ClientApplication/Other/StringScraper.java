@@ -5,7 +5,13 @@ import com.ClientServerApp.UserInput.ClientHumanBeing;
 
 import java.util.Arrays;
 
+
 public class StringScraper {
+    /**
+     * Method converts the string to Container
+     * @param message - user's string
+     * @return Container
+     */
     public static Container create(String message) {
         String[] options = null;
         HumanBeing[] objects = null;

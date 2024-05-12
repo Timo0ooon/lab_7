@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import static java.io.File.separator;
 
+/**
+ * Initializing commands with Help.txt
+ */
 public class TypesOfCommands {
     public static final ArrayList<String> commandsOnServer = new ArrayList<>();
     public static final ArrayList<String> commandsOnClient = new ArrayList<>();

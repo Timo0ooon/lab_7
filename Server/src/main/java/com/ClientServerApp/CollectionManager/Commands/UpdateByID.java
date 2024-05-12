@@ -23,7 +23,10 @@ public class UpdateByID implements Command {
 
         // Action
         for (int i = 0; i < options.length; i++) {
+            int id = collection.get(Integer.parseInt(options[i])).getID();
             collection.put(Integer.parseInt(options[i]), objects[i]);
+            collection.get(Integer.parseInt(options[i])).setID(id);
+
         }
 
         return new Response("Done!");

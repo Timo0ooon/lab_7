@@ -2,6 +2,9 @@ package com.ClientServerApp.ClientApplication.Other;
 
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 
+/**
+ * Class with Getters and Setters. Needed to store commands parameters and objects.
+ */
 public class Container {
     private String command;
     private String[] options;

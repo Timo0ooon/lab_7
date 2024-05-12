@@ -7,8 +7,15 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.nio.channels.SocketChannel;
 
+/**
+ * @param <T> - Class parameterization.
+ */
 public class ServerResponseReader<T> {
 
+    /**
+     * @param data - Serialized object sent from Server application.
+     * @return Response or AuthorizationResponse.
+     */
     public T read(byte[] data) {
         try (
                 ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(data);

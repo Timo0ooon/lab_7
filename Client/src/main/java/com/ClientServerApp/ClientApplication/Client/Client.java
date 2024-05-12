@@ -22,17 +22,29 @@ import java.nio.channels.SocketChannel;
 import java.util.Hashtable;
 import java.util.Scanner;
 
+/**
+ * The client class works with the server.
+ * The first thing it does is registration or authorization, they communicate by AuthorizationResponse and AuthorizationRequest classes.
+ * Then the client communicates with the Server using classes Request and Response.
+ */
 public class Client {
     private final int port;
     private final String host;
     private static final Scanner scanner = new Scanner(System.in);
     private final CommandManager commandManager = new CommandManager();
 
+    /**
+     * @param host - server host.
+     * @param port - server port.
+     */
     public Client(String host, int port) {
         this.host = host;
         this.port = port;
     }
 
+    /**
+     *  Method starts application.
+     */
     public void run() {
         AuthorizationRequest registrationRequest;
         try (
@@ -81,9 +93,6 @@ public class Client {
                             sentence.append("[Result] ").append(result);
 
                         System.out.println(sentence);
-                    }
-                    else {
-                        System.out.println("[Error] response is empty");
                     }
                 }
                 catch (Exception ignored) {}
