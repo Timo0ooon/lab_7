@@ -84,7 +84,7 @@ public class Server {
                             int bytes = client.read(buffer);
 
                             if (bytes == -1) {
-                                this.logger.info("Client disconnected! Client: " + client.getLocalAddress());
+                                this.logger.info("Client disconnected! Client: User_" + this.clientHandler.get(client).getUserID());
                                 this.clientHandler.remove(client);
                                 client.close();
                             }
@@ -101,7 +101,7 @@ public class Server {
                         }
 
                         catch (SocketException e) {
-                            this.logger.info("Client terminated Connection! Client: " + client.getLocalAddress());
+                            this.logger.info("Client terminated Connection! Client: User_" + this.clientHandler.get(client).getUserID());
                             this.clientHandler.remove(client);
                             client.close();
                         }

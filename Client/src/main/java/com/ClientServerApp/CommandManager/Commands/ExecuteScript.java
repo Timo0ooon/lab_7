@@ -14,7 +14,7 @@ import java.util.Hashtable;
 
 import static java.io.File.separator;
 
-public class Execute_script {
+public class ExecuteScript {
     public static Response execute(SocketChannel channel) {
         File file = new File("Files" + separator + "Commands" + separator + "Commands.txt");
         CommandManager commandManager = new CommandManager();

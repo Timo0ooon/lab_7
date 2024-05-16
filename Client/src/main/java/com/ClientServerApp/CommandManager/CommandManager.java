@@ -4,7 +4,7 @@ import com.ClientServerApp.ClientApplication.LocalManagers.ServerRequestWriter;
 import com.ClientServerApp.ClientApplication.LocalManagers.ServerResponseReader;
 import com.ClientServerApp.CommandManager.Commands.Command;
 
-import com.ClientServerApp.CommandManager.Commands.Execute_script;
+import com.ClientServerApp.CommandManager.Commands.ExecuteScript;
 import com.ClientServerApp.CommandManager.Commands.Exit;
 import com.ClientServerApp.CommandManager.Commands.Help;
 import com.ClientServerApp.ClientApplication.Other.Container;
@@ -58,7 +58,7 @@ public class CommandManager {
 
 
         else if (TypesOfCommands.hybridCommands.contains(container.getCommand())) {
-            return Execute_script.execute(channel);
+            return ExecuteScript.execute(channel);
         }
 
         return new Response(null, "Unknown command!");

@@ -104,7 +104,7 @@ public class ClientHandler implements Runnable {
             String hashedPassword = request.hashedPassword();
 
             HashMap<String, String> clients = new HashMap<>();
-            Objects.requireNonNull(Users.get()).forEach(el -> { clients.put(el[1], el[2]); });
+            Users.get().forEach(el -> clients.put(el[1], el[2]));
 
             if (!clients.containsKey(username)) {
 
