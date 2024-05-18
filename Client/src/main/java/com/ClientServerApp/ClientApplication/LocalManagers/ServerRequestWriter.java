@@ -20,7 +20,7 @@ public class ServerRequestWriter {
     public <T> void write(T request, SocketChannel socketChannel) {
         try (
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)
                 ) {
             objectOutputStream.writeObject(request);
 
@@ -32,7 +32,7 @@ public class ServerRequestWriter {
             }
 
         } catch (IOException e) {
-            System.out.println(e);
+            System.out.println("[Error]: " + e.getMessage());
         }
     }
 }

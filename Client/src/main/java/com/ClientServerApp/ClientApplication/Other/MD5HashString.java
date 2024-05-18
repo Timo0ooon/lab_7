@@ -22,7 +22,7 @@ public class MD5HashString {
 
         }
         catch (NoSuchAlgorithmException e) {
-            System.out.println(e);
+            System.out.println("[Error]: " + e.getMessage());
         }
         return null;
     }

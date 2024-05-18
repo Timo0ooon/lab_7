@@ -1,10 +1,8 @@
 package com.ClientServerApp.ServerApplication.Server;
 
 import com.ClientServerApp.Environment;
-import com.ClientServerApp.ServerApplication.Server.Server;
-import org.apache.log4j.PropertyConfigurator;
 
-import java.io.IOException;
+import org.apache.log4j.PropertyConfigurator;
 
 import static java.io.File.separator;
 

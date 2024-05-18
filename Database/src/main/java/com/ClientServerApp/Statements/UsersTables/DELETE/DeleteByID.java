@@ -1,6 +1,7 @@
 package com.ClientServerApp.Statements.UsersTables.DELETE;
 
 import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +13,7 @@ public class DeleteByID {
     private static final Logger logger = LoggerFactory.getLogger(DeleteByID.class);
     public static void delete(int userID) {
         try (
-                Connection connection = new SQLDatabaseManager().connect();
+                Connection connection = new SQLDatabaseManager().connect()
                 ) {
             try (
                     PreparedStatement preparedStatement = connection.prepareStatement(
@@ -21,7 +22,6 @@ public class DeleteByID {
                     ) {
                 preparedStatement.executeUpdate();
             }
-
         } catch (SQLException e) {
             logger.error(e.toString());
         }

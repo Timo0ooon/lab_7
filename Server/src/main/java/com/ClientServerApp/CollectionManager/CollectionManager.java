@@ -2,15 +2,13 @@ package com.ClientServerApp.CollectionManager;
 
 import com.ClientServerApp.CollectionManager.Commands.*;
 import com.ClientServerApp.CollectionManager.Other.Status;
-import com.ClientServerApp.Model.HumanBeing.HumanBeing;
-import com.ClientServerApp.Request.Request;
-import com.ClientServerApp.Response.Response;
-import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.sql.Connection;
+import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+
+import com.ClientServerApp.Request.Request;
+
+import com.ClientServerApp.Response.Response;
+
 import java.util.HashMap;
 import java.util.Hashtable;
 

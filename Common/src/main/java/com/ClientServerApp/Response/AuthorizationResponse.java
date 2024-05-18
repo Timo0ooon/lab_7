@@ -7,7 +7,6 @@ public class AuthorizationResponse implements Serializable {
     @Serial
     private static final long serialVersionUID = 2023L;
     private boolean status;
-    public AuthorizationResponse() {}
 
     public AuthorizationResponse(boolean status) {
         this.status = status;

@@ -47,7 +47,7 @@ public class Server {
             channel.configureBlocking(false);
             channel.register(selector, SelectionKey.OP_ACCEPT);
 
-            this.logger.info("Server started!. Address: " + channel.getLocalAddress());
+            this.logger.info("Server started!. Address: {}", channel.getLocalAddress());
 
             while (!Thread.currentThread().isInterrupted()) {
                 int numReadyChannels = selector.select();
@@ -69,7 +69,7 @@ public class Server {
                         if (client == null) {
                             continue;
                         }
-                        this.logger.info("Client-" + this.userCount + " " + "connected! Client: " + client.getLocalAddress());
+                        this.logger.info("Client-{} connected! Client: {}", this.userCount, client.getLocalAddress());
 
                         client.configureBlocking(false);
                         client.register(selector, SelectionKey.OP_READ);
@@ -84,7 +84,7 @@ public class Server {
                             int bytes = client.read(buffer);
 
                             if (bytes == -1) {
-                                this.logger.info("Client disconnected! Client: User_" + this.clientHandler.get(client).getUserID());
+                                this.logger.info("Client disconnected! Client: User_{}", this.clientHandler.get(client).getUserID());
                                 this.clientHandler.remove(client);
                                 client.close();
                             }
@@ -101,7 +101,7 @@ public class Server {
                         }
 
                         catch (SocketException e) {
-                            this.logger.info("Client terminated Connection! Client: User_" + this.clientHandler.get(client).getUserID());
+                            this.logger.info("Client terminated Connection! Client: User_{}", this.clientHandler.get(client).getUserID());
                             this.clientHandler.remove(client);
                             client.close();
                         }

@@ -4,6 +4,7 @@ import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 
 import java.io.Serial;
 import java.io.Serializable;
+
 import java.util.Arrays;
 import java.util.Hashtable;
 

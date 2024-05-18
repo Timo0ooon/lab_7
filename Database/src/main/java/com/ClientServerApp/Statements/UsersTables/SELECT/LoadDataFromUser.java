@@ -25,7 +25,7 @@ public class LoadDataFromUser {
     private static final Logger logger = LoggerFactory.getLogger(LoadDataFromUser.class);
     public static Hashtable<Integer, HumanBeing> load(int userID) {
         try (
-                Connection connection = new SQLDatabaseManager().connect();
+                Connection connection = new SQLDatabaseManager().connect()
         ) {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(

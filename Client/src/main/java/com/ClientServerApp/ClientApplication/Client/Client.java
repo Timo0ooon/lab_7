@@ -11,7 +11,6 @@ import com.ClientServerApp.Request.AuthorizationRequest;
 import com.ClientServerApp.Response.AuthorizationResponse;
 import com.ClientServerApp.Response.Response;
 
-
 import java.io.IOException;
 
 import java.net.InetSocketAddress;

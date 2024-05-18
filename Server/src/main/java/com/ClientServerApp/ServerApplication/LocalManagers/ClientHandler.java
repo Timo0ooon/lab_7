@@ -1,28 +1,27 @@
 package com.ClientServerApp.ServerApplication.LocalManagers;
 
 import com.ClientServerApp.CollectionManager.CollectionManager;
-import com.ClientServerApp.CollectionManager.Commands.Save;
 import com.ClientServerApp.CollectionManager.Other.Status;
+
 import com.ClientServerApp.Request.AuthorizationRequest;
 import com.ClientServerApp.Request.Request;
+
 import com.ClientServerApp.Response.AuthorizationResponse;
 import com.ClientServerApp.Response.Response;
 
-import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
 import com.ClientServerApp.Statements.DataAboutUsers.INSERT.Registration;
 import com.ClientServerApp.Statements.DataAboutUsers.SELECT.Users;
 import com.ClientServerApp.Statements.DataAboutUsers.SELECT_AND_CHECK_ID.CheckID;
-import com.ClientServerApp.Statements.UsersTables.CREATE_TABLE.UserIDTableCreate;
 import com.ClientServerApp.Statements.UsersTables.SELECT.LoadDataFromUser;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.sql.Connection;
+
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.concurrent.*;
 
 public class ClientHandler implements Runnable {
@@ -66,12 +65,12 @@ public class ClientHandler implements Runnable {
                     Request request = future.get();
                     if (request != null) {
                         int userID = this.collectionManager.getUserID();
-                        this.logger.info("Request received. Request: " + request + ". ClientID: " + userID);
+                        this.logger.info("Request received. Request: {}. ClientID: {}", request, userID);
                         Response response = this.collectionManager.getResponse(request);
 
                         this.executorService.execute(new ClientResponseWriter<>(response, this.client));
                         this.executorService.awaitTermination(TIME_MS, TimeUnit.MILLISECONDS);
-                        this.logger.info("Response sent! Response: " + response + ". ClientID: " + userID);
+                        this.logger.info("Response sent! Response: {}. ClientID: {}", response, userID);
                     }
 
                 } catch (Exception e) {
@@ -108,7 +107,7 @@ public class ClientHandler implements Runnable {
 
             if (!clients.containsKey(username)) {
 
-                this.logger.info(username + " registered!");
+                this.logger.info("{} registered!", username);
                 Registration.register(username, hashedPassword);
                 Integer userID = CheckID.check(username);
 
@@ -119,7 +118,7 @@ public class ClientHandler implements Runnable {
                 return true;
             }
             else if (clients.get(username).equals(hashedPassword)) {
-                this.logger.info(username + " went to profile!");
+                this.logger.info("{} went to profile!", username);
                 Integer userID = CheckID.check(username);
 
                 if (userID != null) {

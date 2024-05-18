@@ -1,12 +1,12 @@
 package com.ClientServerApp.CollectionManager.Commands;
 
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+
 import com.ClientServerApp.Response.Response;
-import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
+
 import com.ClientServerApp.Statements.UsersTables.DELETE.DeleteByID;
 import com.ClientServerApp.Statements.UsersTables.INSERT.WriteData;
 
-import java.sql.Connection;
 import java.util.Hashtable;
 
 public class Save implements Command {

@@ -1,12 +1,12 @@
 package com.ClientServerApp.ServerApplication.LocalManagers;
 
-import com.ClientServerApp.Response.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
@@ -24,7 +24,7 @@ public class ClientResponseWriter <T> implements Runnable {
     public void run() {
         try (
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
+                ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream)
                 ) {
             objectOutputStream.writeObject(response);
 

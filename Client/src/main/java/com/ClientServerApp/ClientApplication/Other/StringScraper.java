@@ -8,14 +8,14 @@ import java.util.Arrays;
 
 public class StringScraper {
     /**
-     * Method converts the string to Container
-     * @param message - user's string
-     * @return Container
+     * Method converts the string to Container.
+     * @param message - user's string.
+     * @return Container.
      */
     public static Container create(String message) {
-        String[] options = null;
-        HumanBeing[] objects = null;
-        String command = null;
+        String[] options;
+        HumanBeing[] objects;
+        String command;
         Container container = new Container();
 
         String[] values = message.trim().toLowerCase().split(" ");

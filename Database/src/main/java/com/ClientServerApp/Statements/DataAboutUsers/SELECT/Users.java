@@ -5,7 +5,10 @@ import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.PreparedStatement;
 
 import java.util.ArrayList;
 
@@ -16,7 +19,7 @@ public class Users {
         ArrayList<String[]> result = new ArrayList<>();
 
         try (
-                Connection connection = new SQLDatabaseManager().connect();
+                Connection connection = new SQLDatabaseManager().connect()
                 ) {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM users;");
             ResultSet resultSet = statement.executeQuery();
@@ -31,7 +34,9 @@ public class Users {
             }
             return result;
 
-        } catch (SQLException e) {
+        }
+
+        catch (SQLException e) {
             logger.error(e.toString());
         }
 

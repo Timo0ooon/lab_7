@@ -13,7 +13,7 @@ public class SQLDatabaseManager {
             Class.forName("org.postgresql.Driver");
 
             return DriverManager.getConnection(
-                    "jdbc:postgresql://localhost:5432/Users", "postgres", "admin"
+                    "jdbc:postgresql://localhost:5432/Users", new String(Config.USER), new String(Config.PASSWORD)
             );
         }
 

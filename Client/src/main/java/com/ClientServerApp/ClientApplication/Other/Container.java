@@ -9,11 +9,13 @@ public class Container {
     private String command;
     private String[] options;
     private HumanBeing[] objects;
+
     public Container(String command, String[] options, HumanBeing[] objects) {
         this.command = command;
         this.options = options;
         this.objects = objects;
     }
+
     public Container() {}
 
     public String getCommand() {

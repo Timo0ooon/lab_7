@@ -6,7 +6,9 @@ import com.ClientServerApp.CommandManager.CommandManager;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Response.Response;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 
 import java.nio.channels.SocketChannel;
 import java.util.Hashtable;
@@ -14,7 +16,15 @@ import java.util.Hashtable;
 
 import static java.io.File.separator;
 
+/**
+ * Client side command.
+ */
 public class ExecuteScript {
+    /**
+     * Reads commands from a file and sends a request to the server or processes part of the commands on the client side.
+     * @param channel - current connection channel between client and server.
+     * @return - response from server.
+     */
     public static Response execute(SocketChannel channel) {
         File file = new File("Files" + separator + "Commands" + separator + "Commands.txt");
         CommandManager commandManager = new CommandManager();

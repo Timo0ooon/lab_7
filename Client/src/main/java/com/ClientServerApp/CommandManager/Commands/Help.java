@@ -1,11 +1,20 @@
 package com.ClientServerApp.CommandManager.Commands;
 
-import java.io.*;
-import java.util.Map;
+import java.io.File;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.FileReader;
 
 import static  java.io.File.separator;
 
+/**
+ * Client side command.
+ */
 public class Help implements Command {
+
+    /**
+     * Reads Help.txt file and prints content to the console.
+     */
     @Override
     public void execute() {
 

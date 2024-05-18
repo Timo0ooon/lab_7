@@ -3,12 +3,14 @@ package com.ClientServerApp.Statements.UsersTables.INSERT;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
 import com.ClientServerApp.Statements.DataAboutUsers.SELECT.Users;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 

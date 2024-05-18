@@ -1,8 +1,9 @@
 package com.ClientServerApp.Statements.UsersTables.CREATE_TABLE;
 
 import com.ClientServerApp.SQLDatabaseManager.SQLDatabaseManager;
-import com.ClientServerApp.Statements.DataAboutUsers.CREATE_TABLE.UsersTableCreate;
+
 import com.ClientServerApp.Statements.DataAboutUsers.SELECT.Users;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,9 +68,5 @@ public class UserIDTableCreate {
         catch (Exception e) {
             logger.error(e.toString());
         }
-    }
-
-    public static void main(String[] args) {
-        UserIDTableCreate.createTable();
     }
 }
