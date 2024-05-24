@@ -16,26 +16,44 @@
 ```java
 import java.util.concurrent.Semaphore;
 
-class SharedResource {
-    private final Semaphore semaphore;
+// Синхронизатор, ограничивает доступ к какому-то ресурсу. Он принимает аргумент, в котором надо указать количество потоков
+public class SemaphoreExample {
+    public static void main(String[] args) {
+        Semaphore callBox = new Semaphore(2);
+        Thread thread = new Person("Dima", callBox);
+        Thread thread1 = new Person("Dima1", callBox);
+        Thread thread2 = new Person("Dima2", callBox);
+        Thread thread3 = new Person("Dima3", callBox);
 
-    public SharedResource(int permits) {
-        semaphore = new Semaphore(permits);
     }
+}
 
-    public void accessResource() {
+class Person extends Thread {
+    String name;
+    private Semaphore callBox;
+    public Person(String name, Semaphore callBox) {
+        this.name = name;
+        this.callBox = callBox;
+        this.start();
+    }
+    @Override
+    public void run() {
+        System.out.println(this.name + " waiting");
         try {
-            semaphore.acquire();
-            System.out.println(Thread.currentThread().getName() + " accessed the resource.");
-            Thread.sleep(2000); // Simulate resource access
+
+            callBox.acquire(); // threadCount++
+            System.out.println(this.name + " using phone");
+            sleep(2000);
+            System.out.println(this.name + " finished");
+
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            System.out.println(e.getMessage());
         } finally {
-            System.out.println(Thread.currentThread().getName() + " released the resource.");
-            semaphore.release();
+            callBox.release(); // threadCount--
         }
     }
 }
+
 ```
 
 ## CountDownLatch
