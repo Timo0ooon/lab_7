@@ -136,33 +136,69 @@ class Person extends Thread {
 
 ### Пример
 ```java
+import java.util.ArrayList;
 import java.util.concurrent.Exchanger;
 
+// Синхронизатор позволяющий обмениваться данными между двумя потоками, обеспечивает то, что оба потока получают информацию одновременно.
 public class ExchangerExample {
     public static void main(String[] args) {
-        Exchanger<String> exchanger = new Exchanger<>();
+        Exchanger<Actions> exchanger = new Exchanger<>();
+        ArrayList<Actions> actionsDimas = new ArrayList<>();
+        actionsDimas.add(Actions.Paper);
+        actionsDimas.add(Actions.STONE);
+        actionsDimas.add(Actions.SCISSORS);
 
-        new Thread(() -> {
-            try {
-                String data = "Data from Thread 1";
-                System.out.println("Thread 1 is exchanging: " + data);
-                String receivedData = exchanger.exchange(data);
-                System.out.println("Thread 1 received: " + receivedData);
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
-        }).start();
+        ArrayList<Actions> actionsDimon = new ArrayList<>();
+        actionsDimon.add(Actions.STONE);
+        actionsDimon.add(Actions.SCISSORS);
+        actionsDimon.add(Actions.STONE);
 
-        new Thread(() -> {
+        Person Dimas = new Person("Dimas", actionsDimas, exchanger);
+        Person Dimon = new Person("Dimon", actionsDimon, exchanger);
+    }
+}
+
+
+enum Actions {
+    STONE,  // Камень
+    SCISSORS, // Ножницы
+    Paper // Бумага
+}
+
+class Person extends Thread {
+    final Exchanger<Actions> exchanger;
+    final String name;
+
+    final ArrayList<Actions> actions;
+
+    public Person(String name, ArrayList<Actions> actions, Exchanger<Actions> exchanger) {
+        this.exchanger = exchanger;
+        this.name = name;
+        this.actions = actions;
+        this.start();
+    }
+
+    private void whoWins(Actions currentAction, Actions friendAction) {
+        if (currentAction == Actions.STONE && friendAction == Actions.SCISSORS ||
+            currentAction == Actions.Paper && friendAction == Actions.STONE ||
+                currentAction == Actions.SCISSORS && friendAction == Actions.Paper
+        )
+            System.out.println(name + " wins!");
+    }
+
+
+    @Override
+    public void run() {
+        for (Actions action: this.actions) {
             try {
-                String data = "Data from Thread 2";
-                System.out.println("Thread 2 is exchanging: " + data);
-                String receivedData = exchanger.exchange(data);
-                System.out.println("Thread 2 received: " + receivedData);
+                Actions reply = exchanger.exchange(action); // поток блокируется пока не будет ответа от второго потока
+                Thread.sleep(2000);
+                this.whoWins(action, reply);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                System.out.println(e.getMessage());
             }
-        }).start();
+        }
+
     }
 }
 ```
