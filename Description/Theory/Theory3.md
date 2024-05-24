@@ -62,32 +62,69 @@ class Person extends Thread {
 ### Пример
 
 ```java
+import MultiThreading.lesson6.CounterExample;
+
 import java.util.concurrent.CountDownLatch;
 
+// Потоки блокируются пока не выполнится определенное количество действий
 public class CountDownLatchExample {
-    public static void main(String[] args) {
-        final int TASK_COUNT = 3;
-        CountDownLatch latch = new CountDownLatch(TASK_COUNT);
+    public static void main(String[] args) throws InterruptedException {
+        Salesman salesman = new Salesman();
+        salesman.openMarket();
+        salesman.turnOnTheLights();
+        salesman.goToTheCashier();
 
-        for (int i = 0; i < TASK_COUNT; i++) {
-            new Thread(() -> {
-                try {
-                    System.out.println(Thread.currentThread().getName() + " is running.");
-                    Thread.sleep(1000); // Simulate task
-                    System.out.println(Thread.currentThread().getName() + " finished.");
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                } finally {
-                    latch.countDown();
-                }
-            }).start();
-        }
+        new Person("Dima", salesman.countDownLatch);
+        new Person("Nikita", salesman.countDownLatch);
+        new Person("Ilya", salesman.countDownLatch);
+        new Person("Zaur", salesman.countDownLatch);
+        new Person("Jeka", salesman.countDownLatch);
+        new Person("Vlad", salesman.countDownLatch);
+    }
+}
 
+
+class Salesman {
+    public final CountDownLatch countDownLatch = new CountDownLatch(3); // count = 3
+
+    public void openMarket() throws InterruptedException {
+        System.out.println("Market opened");
+        Thread.sleep(1000);
+        countDownLatch.countDown(); // count--
+    }
+
+    public void turnOnTheLights() throws InterruptedException {
+        System.out.println("Salesman turns on the lights");
+        Thread.sleep(1000);
+        countDownLatch.countDown(); // count--
+    }
+
+    public void goToTheCashier() throws InterruptedException {
+        System.out.println("Salesman goes to the cashier");
+        Thread.sleep(1000);
+        countDownLatch.countDown(); // count--
+    }
+
+}
+
+
+class Person extends Thread {
+    public String name;
+    public CountDownLatch countDownLatch;
+
+    Person(String name, CountDownLatch countDownLatch) {
+        this.name = name;
+        this.countDownLatch = countDownLatch;
+        this.start();
+    }
+
+    @Override
+    public void run() {
         try {
-            latch.await();
-            System.out.println("All tasks are finished.");
+            countDownLatch.await(); // while (count != 0)
+            System.out.println(this.name + " go shopping");
         } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            throw new RuntimeException(e);
         }
     }
 }
