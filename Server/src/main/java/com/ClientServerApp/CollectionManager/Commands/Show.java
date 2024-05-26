@@ -15,11 +15,6 @@ public class Show implements Command{
         else if (collection.isEmpty())
             return new Response("Collection is empty!");
 
-        // Action
-        StringBuilder stringBuilder = new StringBuilder("\n[Collection]:\n");
-        for (Integer key: collection.keySet()) {
-            stringBuilder.append(key).append(": ").append(collection.get(key)).append("\n");
-        }
-        return new Response("Done! " + stringBuilder);
+        return new Response("Done! ", null,  collection, null);
     }
 }

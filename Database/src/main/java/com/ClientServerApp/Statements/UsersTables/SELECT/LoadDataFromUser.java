@@ -35,7 +35,7 @@ public class LoadDataFromUser {
             Hashtable<Integer, HumanBeing> collection = new Hashtable<>();
 
             while (resultSet.next()) {
-                int id = resultSet.getInt("key");
+                int id = resultSet.getInt("id");
                 int key = resultSet.getInt("key");
                 String name = resultSet.getString("name");
                 double xCoordinate = resultSet.getDouble("x_coordinate");

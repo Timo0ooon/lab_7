@@ -12,7 +12,10 @@ public class UpdateByID implements Command {
     @Override
     public Response execute(Hashtable<Integer, HumanBeing> collection, String[] options, HumanBeing[] objects) {
         // Checking
-        if (!Arrays.stream(options).allMatch(Checker::isNumber))
+        if (options == null || objects == null)
+            return new Response("Error with arguments!");
+
+        else if (!Arrays.stream(options).allMatch(Checker::isNumber))
             return new Response("Error with arguments! Not all arguments are numbers!");
 
         else if (!Arrays.stream(options).allMatch(el -> collection.containsKey(Integer.parseInt(el))))

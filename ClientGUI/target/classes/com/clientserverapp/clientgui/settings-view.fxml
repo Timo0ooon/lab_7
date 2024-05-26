@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="200.0" maxWidth="300.0" minHeight="200.0" minWidth="300.0" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clientserverapp.clientgui.controllers.SettingsController">
+   <AnchorPane maxHeight="100.0" maxWidth="200.0" minHeight="200.0" minWidth="300.0" prefHeight="100.0" prefWidth="200.0">
+      <Button fx:id="saveButton" layoutX="75.0" layoutY="136.0" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" mnemonicParsing="false" onAction="#onSave" prefHeight="50.0" prefWidth="150.0" text="Save">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <ChoiceBox fx:id="languageSelection" layoutX="75.0" layoutY="85.0" maxHeight="30.0" maxWidth="150.0" minHeight="30.0" minWidth="150.0" prefHeight="30.0" prefWidth="150.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </ChoiceBox>
+      <Label alignment="CENTER" layoutX="50.0" layoutY="24.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Choose language">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </AnchorPane>
+</VBox>

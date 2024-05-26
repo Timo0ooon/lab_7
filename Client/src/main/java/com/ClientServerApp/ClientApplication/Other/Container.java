@@ -2,6 +2,8 @@ package com.ClientServerApp.ClientApplication.Other;
 
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 
+import java.util.Arrays;
+
 /**
  * Class with Getters and Setters. Needed to store commands parameters and objects.
  */
@@ -40,5 +42,14 @@ public class Container {
 
     public void setObjects(HumanBeing[] objects) {
         this.objects = objects;
+    }
+
+    @Override
+    public String toString() {
+        return "Container{" +
+                "command='" + command + '\'' +
+                ", options=" + Arrays.toString(options) +
+                ", objects=" + Arrays.toString(objects) +
+                '}';
     }
 }

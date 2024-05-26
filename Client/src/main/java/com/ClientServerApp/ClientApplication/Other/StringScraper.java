@@ -29,7 +29,6 @@ public class StringScraper {
             options = values[1].replaceAll("\\{", "").replaceAll("}", "").split(",");
             if (!Arrays.stream(options).allMatch(Checker::checkNumber))
                 return null;
-
             container.setOptions(options);
 
             if (command.equals("remove_key"))

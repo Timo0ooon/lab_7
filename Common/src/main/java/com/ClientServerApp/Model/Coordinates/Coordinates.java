@@ -9,6 +9,13 @@ public class Coordinates implements Serializable {
     @Serial
     private static final long serialVersionUID = 1013L;
 
+    public Coordinates() {}
+
+    public Coordinates(Double x, Long y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public Double getX() {
         return x;
     }
@@ -27,9 +34,6 @@ public class Coordinates implements Serializable {
 
     @Override
     public String toString() {
-        return "Coordinates{" +
-                "x=" + x +
-                ", y=" + y +
-                '}';
+        return "(" + x + ", " + y + ")";
     }
 }

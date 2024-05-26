@@ -10,6 +10,7 @@ public class MaxByImpactSpeed implements Command{
     @Override
     public Response execute(Hashtable<Integer, HumanBeing> collection, String[] options, HumanBeing[] objects) {
         // Checking
+
         if (collection.isEmpty())
             return new Response("Collection is empty!");
 

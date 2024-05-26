@@ -2,8 +2,6 @@ package com.ClientServerApp.ClientApplication.Client;
 
 import com.ClientServerApp.Environment;
 
-import java.io.Console;
-
 /**
  * Class Application starts Client application to work with Server.
  */

@@ -4,20 +4,15 @@ import com.ClientServerApp.ClientApplication.LocalManagers.ServerRequestWriter;
 import com.ClientServerApp.ClientApplication.LocalManagers.ServerResponseReader;
 import com.ClientServerApp.ClientApplication.Other.MD5HashString;
 import com.ClientServerApp.CommandManager.CommandManager;
-
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Request.AuthorizationRequest;
-
 import com.ClientServerApp.Response.AuthorizationResponse;
 import com.ClientServerApp.Response.Response;
 
 import java.io.IOException;
-
 import java.net.InetSocketAddress;
-
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-
 import java.util.Hashtable;
 import java.util.Scanner;
 
