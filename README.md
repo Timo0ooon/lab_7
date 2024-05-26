@@ -1,1 +1,1 @@
-# [_________________________________](Description/Task.md)
+**[Описание лабы](Description/Task.md)**
