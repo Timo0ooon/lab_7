@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="800.0" maxWidth="700.0" minHeight="800.0" minWidth="700.0" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clientserverapp.clientgui.controllers.EditController">
+<VBox maxHeight="800.0" maxWidth="700.0" minHeight="800.0" minWidth="700.0" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clientserverapp.clientgui.controllers.EditController">
    <AnchorPane maxHeight="800.0" maxWidth="700.0" minHeight="800.0" minWidth="700.0" prefHeight="800.0" prefWidth="700.0">
       <Label fx:id="formLabel" alignment="CENTER" layoutX="50.0" layoutY="7.0" maxHeight="50.0" maxWidth="600.0" minHeight="50.0" minWidth="600.0" prefHeight="50.0" prefWidth="600.0" text="Form for creating a new object">
          <font>
