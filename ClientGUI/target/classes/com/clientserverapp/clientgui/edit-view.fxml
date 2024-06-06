@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="800.0" maxWidth="700.0" minHeight="800.0" minWidth="700.0" prefHeight="800.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clientserverapp.clientgui.controllers.EditController">
+   <AnchorPane maxHeight="800.0" maxWidth="700.0" minHeight="800.0" minWidth="700.0" prefHeight="800.0" prefWidth="700.0">
+      <Label fx:id="formLabel" alignment="CENTER" layoutX="50.0" layoutY="7.0" maxHeight="50.0" maxWidth="600.0" minHeight="50.0" minWidth="600.0" prefHeight="50.0" prefWidth="600.0" text="Form for creating a new object">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="nameLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="108.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Name:">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="coordinatesLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="150.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Coordinates:" AnchorPane.topAnchor="170.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="realHeroLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="220.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Real Hero:" AnchorPane.topAnchor="240.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="hasToothpickLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="290.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Has Toothpick:" AnchorPane.topAnchor="310.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="impactSpeedLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="360.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Impact Speed:" AnchorPane.topAnchor="380.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="weaponTypeLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="430.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Weapon Type:" AnchorPane.topAnchor="450.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="moodLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="500.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Mood:" AnchorPane.topAnchor="520.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="carLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="570.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Car:" AnchorPane.topAnchor="590.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField layoutX="277.0" layoutY="110.0" minHeight="35.0" minWidth="300.0" AnchorPane.topAnchor="178.0" />
+      <TextField fx:id="coordinatesInput" layoutX="277.0" layoutY="178.0" minHeight="35.0" minWidth="300.0" AnchorPane.topAnchor="178.0" />
+      <TextField fx:id="nameInput" layoutX="277.0" layoutY="116.0" minHeight="35.0" minWidth="300.0" />
+      <TextField fx:id="carInput" layoutX="277.0" layoutY="598.0" minHeight="35.0" minWidth="300.0" />
+      <TextField fx:id="impactSpeedInput" layoutX="277.0" layoutY="383.0" minHeight="35.0" minWidth="300.0" />
+      <ChoiceBox fx:id="realHeroChoice" layoutX="277.0" layoutY="248.0" maxHeight="35.0" maxWidth="300.0" minHeight="35.0" minWidth="300.0" prefHeight="35.0" prefWidth="300.0" />
+      <ChoiceBox fx:id="hasToothPickChoice" layoutX="277.0" layoutY="318.0" maxHeight="35.0" maxWidth="300.0" minHeight="35.0" minWidth="300.0" prefHeight="35.0" prefWidth="300.0" />
+      <ChoiceBox fx:id="weaponTypeChoice" layoutX="277.0" layoutY="458.0" maxHeight="35.0" maxWidth="300.0" minHeight="35.0" minWidth="300.0" prefHeight="35.0" prefWidth="300.0" />
+      <ChoiceBox fx:id="moodChoice" layoutX="277.0" layoutY="528.0" maxHeight="35.0" maxWidth="300.0" minHeight="35.0" minWidth="300.0" prefHeight="35.0" prefWidth="300.0" />
+      <Label fx:id="languageLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="640.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Language:" AnchorPane.topAnchor="660.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="languageChoice" layoutX="277.0" layoutY="668.0" maxHeight="35.0" maxWidth="300.0" minHeight="35.0" minWidth="300.0" prefHeight="35.0" prefWidth="300.0" />
+      <Button fx:id="saveButton" layoutX="250.0" layoutY="731.0" maxHeight="50.0" maxWidth="200.0" minHeight="40.0" minWidth="200.0" mnemonicParsing="false" onAction="#onSaveButton" prefHeight="50.0" prefWidth="200.0" text="Save">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+      <Button fx:id="saveLanguageButton" layoutX="586.0" layoutY="673.0" maxHeight="25.0" maxWidth="100.0" minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#onSaveLanguageButton" prefHeight="25.0" prefWidth="100.0" text="Save">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </Button>
+      <Label fx:id="keyLabel" alignment="CENTER_RIGHT" layoutX="14.0" layoutY="50.0" maxHeight="50.0" maxWidth="200.0" minHeight="50.0" minWidth="200.0" prefHeight="50.0" prefWidth="200.0" text="Key:">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="keyInput" layoutX="277.0" layoutY="57.0" minHeight="35.0" minWidth="300.0" />
+   </AnchorPane>
+</VBox>
