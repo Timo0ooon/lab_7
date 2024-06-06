@@ -32,7 +32,7 @@ public class Info implements Command{
             return 1;
         }).get();
 
-        stringBuilder.append("Date of creation").append(dateOfCreation);
+        stringBuilder.append("Date of creation: ").append(dateOfCreation);
 
         return new Response(String.valueOf(stringBuilder));
     }

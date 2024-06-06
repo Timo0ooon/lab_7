@@ -6,15 +6,21 @@ import com.ClientServerApp.Model.Enums.Mood;
 import com.ClientServerApp.Model.Enums.WeaponType;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Response.Response;
+import com.clientserverapp.clientgui.Application;
 import com.clientserverapp.clientgui.Environment.UserData;
+import com.clientserverapp.clientgui.util.Localizer;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.PieChart;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,53 +45,49 @@ public class MainController implements Initializable {
 
     @FXML public ChoiceBox<String> commandChoiceBox;
 
+    @FXML public Button saveButton;
+
     @FXML public Label commandLabel;
-
-    @FXML public Pagination pagination;
-
-    @FXML public PieChart pieChart;
 
     @FXML public Label usernameLabel;
 
     @FXML public Label messageFromServerLabel;
 
+    @FXML public Label currentUserLabel;
+
     @FXML public Label messageLabel;
+
+    @FXML public Button executeButton;
+
+    @FXML public ChoiceBox<String> languageChoiceBox;
+
+    @FXML public Button helpButton;
+
+    @FXML public Label languageLabel;
 
     @FXML public TableView<HumanBeing> mainTable;
 
     @FXML public TableColumn<HumanBeing, Integer> idColumn;
-    @FXML public ChoiceBox<String> idChoiceBox;
-
     @FXML public TableColumn<HumanBeing, String> nameColumn;
-    @FXML public ChoiceBox<String> nameChoiceBox;
-
     @FXML public TableColumn<HumanBeing, Coordinates> coordinatesColumn;
-    @FXML public ChoiceBox<String> coordinatesChoiceBox;
-
     @FXML public TableColumn<HumanBeing, LocalDate> creationDateColumn;
-    @FXML public ChoiceBox<String> creationDateChoiceBox;
-
     @FXML public TableColumn<HumanBeing, Boolean> realHeroColumn;
-    @FXML public ChoiceBox<String> realHeroChoiceBox;
-
     @FXML public TableColumn<HumanBeing, Boolean> hasToothpickColumn;
-    @FXML public ChoiceBox<String> hasToothpickChoiceBox;
-
     @FXML public TableColumn<HumanBeing, Integer> impactSpeedColumn;
-    @FXML public ChoiceBox<String> impactSpeedChoiceBox;
-
     @FXML public TableColumn<HumanBeing, WeaponType> weaponTypeColumn;
-    @FXML public ChoiceBox<String> weaponTypeChoiceBox;
-
     @FXML public TableColumn<HumanBeing, Mood> moodColumn;
-    @FXML public ChoiceBox<String> moodChoiceBox;
-
     @FXML public TableColumn<HumanBeing, Car> carColumn;
-    @FXML public ChoiceBox<String> carChoiceBox;
-    @FXML public Button onSaveButton;
+    @FXML public Button insertButton;
+
+    private ObservableList<HumanBeing> list;
+
 
     private ObservableList<HumanBeing> initialData(Hashtable<Integer, HumanBeing> collection) {
-        return FXCollections.observableArrayList(collection.values());
+        if (this.list == null) {
+            this.list = FXCollections.observableArrayList(collection.values());
+            UserData.list = this.list;
+        }
+        return this.list;
     }
 
     public void setData(Hashtable<Integer, HumanBeing> collection) {
@@ -101,8 +103,11 @@ public class MainController implements Initializable {
                 Pattern pattern = Pattern.compile("\\[[a-zA-Z]+]\\s[a-zA-Z_]+\\s(.+|\\{.+})\\s+-.+");
                 Matcher matcher = pattern.matcher(line);
                 if (matcher.find()) {
-                    String command = matcher.group().split(" ")[1];
-                    this.commandChoiceBox.getItems().add(command);
+                    String[] elements = matcher.group().split(" ");
+                    String command = elements[1];
+                    String info = elements[0];
+                    if (!(info.equals("[Client]") || info.equals("[Hybrid]")) && !command.equals("insert"))
+                        this.commandChoiceBox.getItems().add(command);
                 }
             }
         }
@@ -118,9 +123,59 @@ public class MainController implements Initializable {
         return response.getCollection();
     }
 
+    @FXML
+    public void onExecute(ActionEvent actionEvent) {
+        String command = this.commandChoiceBox.getValue();
+        String arguments = this.argumentsTextField.getText();
+
+        if (command != null) {
+
+            String userCommand;
+            if (arguments == null || arguments.isEmpty()) userCommand = command;
+            else userCommand  = command + " " + "{" + arguments + "}";
+            Response response = UserData.clientWorking.work(userCommand);
+
+            Hashtable<Integer, HumanBeing> collection = response.getCollection();
+            HumanBeing humanBeing = response.getHumanBeing();
+
+            String message = response.getMessage();
+
+            if (humanBeing != null) {
+                this.list.clear();
+                this.list.add(humanBeing);
+            }
+
+            else if (collection != null) {
+                this.setData(collection);
+            }
+
+            if (message != null) {
+                this.messageFromServerLabel.setText(message);
+            }
+        }
+    }
+
+    @FXML
+    public void onHelp(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = Application.getFXMLLoader("help-view.fxml");
+            Stage stage = new Stage();
+            Scene scene = new Scene(fxmlLoader.load(), 700, 400);
+
+            stage.setTitle("Help");
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        this.languageChoiceBox.setValue("English");
+        this.languageChoiceBox.getItems().addAll("Русский", "Српски", "Latviski", "English");
+
         this.usernameLabel.setText(UserData.name);
 
         this.idColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
@@ -134,63 +189,60 @@ public class MainController implements Initializable {
         this.moodColumn.setCellValueFactory(new PropertyValueFactory<>("mood"));
         this.carColumn.setCellValueFactory(new PropertyValueFactory<>("car"));
 
-        this.idChoiceBox.getItems().setAll(
-                "numbers in ascending order",
-                "numbers in descending order"
-        );
-
-        this.nameChoiceBox.getItems().setAll(
-                "alphabet order",
-                "reverse alphabetical order"
-        );
-
-        this.coordinatesChoiceBox.getItems().setAll(
-                "x: ascending, y: ascending",
-                "x: ascending, y: descending",
-                "x: descending, y: ascending",
-                "x descending, y: descending"
-        );
-
-        this.creationDateChoiceBox.getItems().setAll(
-                "date ascending",
-                "date descending"
-        );
-
-        this.realHeroChoiceBox.getItems().setAll(
-                "true -> false",
-                "false -> true"
-        );
-
-        this.hasToothpickChoiceBox.getItems().setAll(
-                "true -> false",
-                "false -> true"
-        );
-
-        this.impactSpeedChoiceBox.getItems().setAll(
-                "numbers in ascending order",
-                "numbers in descending order"
-        );
-
-        this.weaponTypeChoiceBox.getItems().setAll(
-                "alphabet order",
-                "reverse alphabetical order"
-        );
-
-        this.moodChoiceBox.getItems().setAll(
-                "alphabet order",
-                "reverse alphabetical order"
-        );
-
-        this.carChoiceBox.getItems().setAll(
-                "alphabet order",
-                "reverse alphabetical order"
-        );
-
         this.loadCommandChoiceBox();
 
         Hashtable<Integer, HumanBeing> collection = this.getDataFromUserAfterAuthorization();
         if (collection != null) {
             this.setData(collection);
         }
+    }
+
+    @FXML
+    public void onSave(ActionEvent actionEvent) {
+        String language = this.languageChoiceBox.getSelectionModel().getSelectedItem();
+        Localizer localizer = new Localizer(language);
+        this.setLanguage(localizer, actionEvent);
+    }
+
+    private void setLanguage(Localizer localizer, ActionEvent actionEvent) {
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        UserData.localizer = localizer;
+
+        stage.setTitle(localizer.getValue("mainView"));
+        this.idColumn.setText(localizer.getValue("idColumn"));
+        this.nameColumn.setText(localizer.getValue("nameColumn"));
+        this.coordinatesColumn.setText(localizer.getValue("coordinatesColumn"));
+        this.creationDateColumn.setText(localizer.getValue("creationDateColumn"));
+        this.realHeroColumn.setText(localizer.getValue("realHeroColumn"));
+        this.hasToothpickColumn.setText(localizer.getValue("hasToothPickColumn"));
+        this.impactSpeedColumn.setText(localizer.getValue("impactSpeedColumn"));
+        this.weaponTypeColumn.setText(localizer.getValue("weaponTypeColumn"));
+        this.moodColumn.setText(localizer.getValue("moodColumn"));
+        this.carColumn.setText(localizer.getValue("carColumn"));
+        this.currentUserLabel.setText(localizer.getValue("currentUser"));
+        this.commandLabel.setText(localizer.getValue("command"));
+        this.argumentsLabel.setText(localizer.getValue("arguments"));
+        this.executeButton.setText(localizer.getValue("execute"));
+        this.helpButton.setText(localizer.getValue("help"));
+        this.languageLabel.setText(localizer.getValue("language"));
+        this.messageLabel.setText(localizer.getValue("message"));
+        this.saveButton.setText(localizer.getValue("save"));
+        this.insertButton.setText(localizer.getValue("insert"));
+    }
+
+    private void getEditView() {
+        try {
+            Stage stage = new Stage();
+            Scene scene = new Scene(Application.getFXMLLoader("edit-view.fxml").load());
+            stage.setScene(scene);
+            stage.show();
+        } catch (Exception e) {
+            logger.error(e.toString());
+        }
+    }
+
+    @FXML
+    public void onInsert(ActionEvent actionEvent) {
+        this.getEditView();
     }
 }

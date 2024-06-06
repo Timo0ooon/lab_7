@@ -18,6 +18,7 @@ public class AverageOfImpactSpeed implements Command {
             return new Response(null, "This command doesn't accept arguments!");
 
         // Action
-        return new Response(collection.values().stream().map(HumanBeing::getImpactSpeed).reduce(Integer::sum).get() / collection.size(), "Done!");
+        double result = (double) collection.values().stream().map(HumanBeing::getImpactSpeed).reduce(Integer::sum).get() / collection.size();
+        return new Response(result, "Done! Result: " + result);
     }
 }

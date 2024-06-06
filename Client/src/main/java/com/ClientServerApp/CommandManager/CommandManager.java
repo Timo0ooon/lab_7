@@ -9,6 +9,7 @@ import com.ClientServerApp.CommandManager.Commands.Command;
 import com.ClientServerApp.CommandManager.Commands.ExecuteScript;
 import com.ClientServerApp.CommandManager.Commands.Exit;
 import com.ClientServerApp.CommandManager.Commands.Help;
+import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.ClientServerApp.Request.Request;
 import com.ClientServerApp.Response.Response;
 
@@ -67,6 +68,34 @@ public class CommandManager {
         else if (TypesOfCommands.hybridCommands.contains(container.getCommand())) {
             return ExecuteScript.execute(channel);
         }
+
+        return new Response(null, "Unknown command!");
+    }
+
+    public Response find(String userLine, SocketChannel channel, HumanBeing[] objects) {
+        userLine = userLine.toLowerCase().trim();
+        Container container = StringScraper.create(userLine, objects);
+
+        if (container == null)
+            return new Response(null, "Unknown syntax");
+
+        if (TypesOfCommands.commandsOnServer.contains(container.getCommand())) {
+            Request request = new Request(container.getCommand(), container.getOptions(), container.getObjects());
+            new ServerRequestWriter().write(request, channel);
+            try {
+                ByteBuffer responseBuffer = ByteBuffer.allocate(1024 * 1024);
+                int bytesRead = channel.read(responseBuffer);
+                byte[] responseBytes = new byte[bytesRead];
+                responseBuffer.flip();
+                responseBuffer.get(responseBytes);
+
+                return new ServerResponseReader<Response>().read(responseBytes);
+            }
+            catch (Exception ignored) {}
+
+            return new Response(null, "Error reading command");
+        }
+
 
         return new Response(null, "Unknown command!");
     }

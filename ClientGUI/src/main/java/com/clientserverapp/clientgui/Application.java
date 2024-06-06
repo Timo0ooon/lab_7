@@ -1,6 +1,8 @@
 package com.clientserverapp.clientgui;
 
+import com.clientserverapp.clientgui.Environment.UserData;
 import com.clientserverapp.clientgui.Tasks.Connection;
+import com.clientserverapp.clientgui.util.Localizer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -22,6 +24,7 @@ public class Application extends javafx.application.Application {
     }
 
     private void setRegistrationView(Stage stage) throws IOException {
+        UserData.localizer = new Localizer("English");
         FXMLLoader fxmlLoader = getFXMLLoader("loading-view.fxml");
         Scene scene = new Scene(fxmlLoader.load(), 300, 200);
 

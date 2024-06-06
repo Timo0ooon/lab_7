@@ -1,7 +1,10 @@
 package com.clientserverapp.clientgui.Environment;
 
 import com.ClientServerApp.ClientApplication.ClientWorking.ClientWorking;
-import com.clientserverapp.clientgui.LanguageSetting.Languages;
+import com.ClientServerApp.Model.HumanBeing.HumanBeing;
+import com.clientserverapp.clientgui.Bundles.Languages;
+import com.clientserverapp.clientgui.util.Localizer;
+import javafx.collections.ObservableList;
 
 import java.nio.channels.SocketChannel;
 
@@ -10,4 +13,6 @@ public class UserData {
     public static String name;
     public static Languages language;
     public static ClientWorking clientWorking;
+    public static Localizer localizer;
+    public static ObservableList<HumanBeing> list;
 }

@@ -3,7 +3,6 @@ module Client {
 
     exports com.ClientServerApp.ClientApplication.ClientWorking;
     exports com.ClientServerApp.ClientApplication.Other;
-    exports com.ClientServerApp.ClientApplication.Client;
     exports com.ClientServerApp.ClientApplication.LocalManagers;
 
     exports com.ClientServerApp.CommandManager.Commands;

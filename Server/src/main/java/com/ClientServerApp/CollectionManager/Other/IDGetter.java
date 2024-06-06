@@ -13,7 +13,7 @@ public class IDGetter {
             List<Integer> identifiers = collection.values().stream().map(HumanBeing::getID).sorted().toList();
             Optional<Integer> value = identifiers.stream().max(Integer::compareTo);
             if (value.isPresent())
-                return value.get() + 1;
+                return value.get();
         }
         return 1;
     }

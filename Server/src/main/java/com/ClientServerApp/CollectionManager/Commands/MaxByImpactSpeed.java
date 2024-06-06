@@ -26,6 +26,6 @@ public class MaxByImpactSpeed implements Command{
             return 1;
         }).get();
 
-        return new Response("Done! Human: " + humanBeing);
+        return new Response("Done!", null, null, humanBeing);
     }
 }

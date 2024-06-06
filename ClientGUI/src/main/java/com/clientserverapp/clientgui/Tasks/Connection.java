@@ -41,7 +41,6 @@ public class Connection implements Runnable {
         UserData.socketChannel = socketChannel;
         UserData.clientWorking = new ClientWorking(socketChannel);
 
-        // По сути из потока Connection-Thread я обращаюсь к потоку JavaFX
         Platform.runLater(() -> {
             try {
                 Scene scene = new Scene(Application.getFXMLLoader("registration-view.fxml").load(), 600, 700);

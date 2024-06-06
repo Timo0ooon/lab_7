@@ -7,6 +7,7 @@ import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 
 import com.ClientServerApp.Response.Response;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Objects;
@@ -26,11 +27,15 @@ public class Insert implements Command {
             return new Response("Error with objects! not all elements are entered!");
 
         // Action
-        Integer firstID = IDGetter.get(this.userID);
+        ArrayList<Integer> maxValues = new ArrayList<>();
+        maxValues.add(IDGetter.get(this.userID));
+        maxValues.add(collection.values().stream().map(HumanBeing::getID).max(Integer::compareTo).stream().toList().get(0));
+
+        Integer firstID = maxValues.stream().max(Integer::compareTo).stream().toList().get(0);
         for (int i = 0; i < options.length; i++) {
+            firstID++;
             objects[i].setID(firstID);
             collection.put(Integer.parseInt(options[i]), objects[i]);
-            firstID++;
         }
 
         return new Response("Done!");

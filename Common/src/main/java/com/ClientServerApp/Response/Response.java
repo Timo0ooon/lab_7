@@ -88,6 +88,7 @@ public class Response implements Serializable {
                 ", options=" + Arrays.toString(options) +
                 ", collection=" + collection +
                 ", humanBeing=" + humanBeing +
+                ", object=" + object +
                 '}';
     }
 }
