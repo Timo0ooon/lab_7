@@ -38,7 +38,14 @@ public class Language_ru extends ListResourceBundle {
                 {"form", "Форма создания нового объекта"},
                 {"editView", "Редактирование"},
                 {"formName", "Имя"},
-                {"key", "Ключ"}
+                {"key", "Ключ"},
+                {"removeLower", "УдалитьНижнего"},
+                {"clear", "Очистить"},
+                {"removeGreater", "УдалитьБольшого"},
+                {"info", "Информация"},
+                {"show", "Показать"},
+                {"average", "Средний"},
+                {"max", "Максимальный"}
         };
     }
 }

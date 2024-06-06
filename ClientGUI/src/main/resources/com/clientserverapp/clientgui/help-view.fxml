@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="400.0" maxWidth="700.0" minHeight="400.0" minWidth="700.0" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clientserverapp.clientgui.controllers.HelpController">
+<HBox maxHeight="400.0" maxWidth="700.0" minHeight="400.0" minWidth="700.0" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clientserverapp.clientgui.controllers.HelpController">
    <ScrollPane fx:id="scrollPane" minViewportHeight="400.0" minViewportWidth="700.0" prefHeight="200.0" prefViewportHeight="400.0" prefViewportWidth="700.0" prefWidth="200.0">
       <BorderPane maxHeight="395.0" maxWidth="695.0" minHeight="395.0" minWidth="695.0" prefHeight="395.0" prefWidth="695.0">
          <left>

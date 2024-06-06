@@ -38,7 +38,14 @@ public class Language_sr extends ListResourceBundle {
                 {"form", "Образац за креирање новог објекта"},
                 {"editView", "Уредити"},
                 {"formName", "Име"},
-                {"key", "Кључ"}
+                {"key", "Кључ"},
+                {"removeLower", "РемовеЛовер"},
+                {"clear", "Jасно"},
+                {"removeGreater", "РемовеГреатер"},
+                {"info", "Инфо"},
+                {"show", "Прикажи"},
+                {"average", "Просек"},
+                {"max", "Макс"}
         };
     }
 }

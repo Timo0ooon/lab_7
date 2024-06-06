@@ -5,12 +5,11 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clientserverapp.clientgui.controllers.MainController">
+<HBox maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.clientserverapp.clientgui.controllers.MainController">
     <AnchorPane maxHeight="800.0" maxWidth="1200.0" minHeight="800.0" minWidth="1200.0" prefHeight="800.0" prefWidth="1200.0">
         <Label fx:id="currentUserLabel" alignment="CENTER" layoutX="14.0" layoutY="14.0" maxHeight="50.0" maxWidth="315.0" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="315.0" text="Current user:" textAlignment="CENTER">
            <font>
@@ -35,48 +34,71 @@
                 <TableColumn fx:id="carColumn" prefWidth="103.0" text="Car" />
             </columns>
         </TableView>
-        <Label fx:id="commandLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="531.0" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" text="Command:" AnchorPane.topAnchor="531.0">
-           <font>
-               <Font size="24.0" />
-           </font>
-        </Label>
-        <ChoiceBox fx:id="commandChoiceBox" layoutX="174.0" layoutY="541.0" maxHeight="30.0" maxWidth="200.0" minHeight="30.0" minWidth="200.0" prefHeight="30.0" prefWidth="200.0" AnchorPane.leftAnchor="174.0" AnchorPane.topAnchor="541.0" />
-        <Label fx:id="argumentsLabel" alignment="CENTER" layoutX="14.0" layoutY="586.0" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" text="Arguments:" AnchorPane.topAnchor="586.0">
-           <font>
-               <Font size="24.0" />
-           </font>
-        </Label>
-        <TextField fx:id="argumentsTextField" layoutX="174.0" layoutY="596.0" maxHeight="30.0" maxWidth="250.0" minHeight="30.0" minWidth="250.0" prefHeight="30.0" prefWidth="250.0" />
-      <Button fx:id="executeButton" layoutX="14.0" layoutY="661.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onExecute" prefHeight="50.0" prefWidth="175.0" text="Execute" AnchorPane.leftAnchor="14.0">
-         <font>
-            <Font size="24.0" />
-         </font>
-      </Button>
       <Label fx:id="messageFromServerLabel" layoutX="586.0" layoutY="516.0" maxHeight="200.0" maxWidth="600.0" minHeight="200.0" minWidth="600.0" prefHeight="200.0" prefWidth="600.0">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Label fx:id="messageLabel" contentDisplay="CENTER" layoutX="435.0" layoutY="586.0" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="100.0" prefHeight="50.0" prefWidth="150.0" text="Message:">
+      <Label fx:id="messageLabel" contentDisplay="CENTER" layoutX="450.0" layoutY="591.0" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="100.0" prefHeight="50.0" prefWidth="150.0" text="Message:">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <Button fx:id="helpButton" alignment="CENTER" layoutX="199.0" layoutY="661.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onHelp" prefHeight="50.0" prefWidth="175.0" text="Help">
+      <Button fx:id="helpButton" alignment="CENTER" layoutX="14.0" layoutY="566.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onHelp" prefHeight="50.0" prefWidth="175.0" text="Help" AnchorPane.leftAnchor="14.0">
          <font>
-            <Font size="24.0" />
+            <Font size="18.0" />
          </font>
       </Button>
-      <Label fx:id="languageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="736.0" maxHeight="50.0" maxWidth="224.0" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="224.0" text="Language:">
+      <Label fx:id="languageLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="516.0" maxHeight="50.0" maxWidth="150.0" minHeight="50.0" minWidth="150.0" prefHeight="50.0" prefWidth="150.0" text="Language:">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <ChoiceBox fx:id="languageChoiceBox" layoutX="238.0" layoutY="749.0" maxHeight="25.0" maxWidth="200.0" minHeight="25.0" minWidth="200.0" prefHeight="25.0" prefWidth="200.0" />
-      <Button fx:id="saveButton" layoutX="486.0" layoutY="749.0" maxHeight="25.0" maxWidth="100.0" minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#onSave" prefHeight="25.0" prefWidth="100.0" text="Save" />
-      <Button fx:id="insertButton" layoutX="374.0" layoutY="661.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onInsert" prefHeight="50.0" prefWidth="175.0" text="Insert" AnchorPane.leftAnchor="388.0">
+      <ChoiceBox fx:id="languageChoiceBox" layoutX="172.0" layoutY="529.0" maxHeight="25.0" maxWidth="200.0" minHeight="25.0" minWidth="200.0" prefHeight="25.0" prefWidth="200.0" />
+      <Button fx:id="saveButton" layoutX="385.0" layoutY="529.0" maxHeight="25.0" maxWidth="100.0" minHeight="25.0" minWidth="100.0" mnemonicParsing="false" onAction="#onSave" prefHeight="25.0" prefWidth="100.0" text="Save" />
+      <Button fx:id="insertButton" layoutX="210.0" layoutY="566.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onInsert" prefHeight="50.0" prefWidth="175.0" text="Insert" AnchorPane.leftAnchor="210.0">
          <font>
-            <Font size="24.0" />
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="clearButton" layoutX="210.0" layoutY="621.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onClear" prefHeight="50.0" prefWidth="175.0" text="Clear" AnchorPane.leftAnchor="210.0" AnchorPane.topAnchor="621.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="removeLowerButton" layoutX="14.0" layoutY="621.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onRemoveLowerButton" prefHeight="50.0" prefWidth="175.0" text="RemoveLower" AnchorPane.topAnchor="621.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="removeGreaterButton" layoutX="14.0" layoutY="676.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onRemoveGreater" prefHeight="50.0" prefWidth="175.0" text="RemoveGreater" AnchorPane.topAnchor="676.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="infoButton" layoutX="210.0" layoutY="676.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onInfoButton" prefHeight="50.0" prefWidth="175.0" text="Info" AnchorPane.leftAnchor="210.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="saveCollectionButton" layoutX="14.0" layoutY="726.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onSaveCollectionButton" prefHeight="50.0" prefWidth="175.0" text="Save" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="731.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="averageButton" layoutX="210.0" layoutY="731.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onAverageButton" prefHeight="50.0" prefWidth="175.0" text="Average">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="maxButton" layoutX="385.0" layoutY="731.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onMaxButton" prefHeight="50.0" prefWidth="175.0" text="Max" AnchorPane.leftAnchor="410.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="showButton" layoutX="410.0" layoutY="676.0" maxHeight="50.0" maxWidth="175.0" minHeight="50.0" minWidth="175.0" mnemonicParsing="false" onAction="#onShowButton" prefHeight="50.0" prefWidth="175.0" text="Show">
+         <font>
+            <Font size="18.0" />
          </font>
       </Button>
     </AnchorPane>

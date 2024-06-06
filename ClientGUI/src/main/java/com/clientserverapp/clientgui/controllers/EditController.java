@@ -7,6 +7,8 @@ import com.ClientServerApp.Model.Enums.WeaponType;
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
 import com.clientserverapp.clientgui.Environment.UserData;
 import com.clientserverapp.clientgui.util.Localizer;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -21,6 +23,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.ResourceBundle;
@@ -74,13 +77,14 @@ public class EditController implements Initializable {
             UserData.clientWorking.work("insert {" + key + "}", objects);
 
             Hashtable<Integer, HumanBeing> collection = UserData.clientWorking.work("show").getCollection();
-            UserData.list.clear();
-            UserData.list.addAll(collection.values());
 
+            ObservableList<HumanBeing> list = FXCollections.observableList(new ArrayList<>());
+            list.addAll(collection.values());
+            UserData.mainTable.setItems(list);
 
         }
         catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error(e.toString());
         }
     }
 

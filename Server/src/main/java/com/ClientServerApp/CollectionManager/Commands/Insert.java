@@ -2,9 +2,7 @@ package com.ClientServerApp.CollectionManager.Commands;
 
 import com.ClientServerApp.CollectionManager.Other.Checker;
 import com.ClientServerApp.CollectionManager.Other.IDGetter;
-
 import com.ClientServerApp.Model.HumanBeing.HumanBeing;
-
 import com.ClientServerApp.Response.Response;
 
 import java.util.ArrayList;
@@ -27,11 +25,19 @@ public class Insert implements Command {
             return new Response("Error with objects! not all elements are entered!");
 
         // Action
-        ArrayList<Integer> maxValues = new ArrayList<>();
-        maxValues.add(IDGetter.get(this.userID));
-        maxValues.add(collection.values().stream().map(HumanBeing::getID).max(Integer::compareTo).stream().toList().get(0));
+        Integer firstID;
+        try {
+            ArrayList<Integer> maxValues = new ArrayList<>();
+            if (collection != null)
+                maxValues.add(collection.values().stream().map(HumanBeing::getID).max(Integer::compareTo).stream().toList().get(0));
 
-        Integer firstID = maxValues.stream().max(Integer::compareTo).stream().toList().get(0);
+            maxValues.add(IDGetter.get(this.userID));
+            firstID = maxValues.stream().max(Integer::compareTo).get();
+        }
+        catch ( Exception e ) {
+            firstID = IDGetter.get(this.userID);
+        }
+
         for (int i = 0; i < options.length; i++) {
             firstID++;
             objects[i].setID(firstID);

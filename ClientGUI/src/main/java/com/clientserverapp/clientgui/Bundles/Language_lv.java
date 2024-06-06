@@ -38,7 +38,14 @@ public class Language_lv extends ListResourceBundle {
                 {"form", "Veidlapa jauna objekta izveidei"},
                 {"editView", "Rediģēt"},
                 {"formName", "Vārds"},
-                {"key", "Atslēga"}
+                {"key", "Atslēga"},
+                {"removeLower", "NoņemtLower"},
+                {"clear", "Skaidrs"},
+                {"removeGreater", "noņemtLieliski"},
+                {"info", "Informācija"},
+                {"show", "Rādīt"},
+                {"average", "Vidēji"},
+                {"max", "Maks"}
         };
     }
 }

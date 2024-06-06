@@ -9,7 +9,6 @@ import com.ClientServerApp.Response.Response;
 import com.clientserverapp.clientgui.Application;
 import com.clientserverapp.clientgui.Environment.UserData;
 import com.clientserverapp.clientgui.util.Localizer;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,30 +23,16 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.ResourceBundle;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import static java.io.File.separator;
 
 public class MainController implements Initializable {
     private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 
-    @FXML public Label argumentsLabel;
-
-    @FXML public TextField argumentsTextField;
-
-    @FXML public ChoiceBox<String> commandChoiceBox;
-
     @FXML public Button saveButton;
-
-    @FXML public Label commandLabel;
 
     @FXML public Label usernameLabel;
 
@@ -56,8 +41,6 @@ public class MainController implements Initializable {
     @FXML public Label currentUserLabel;
 
     @FXML public Label messageLabel;
-
-    @FXML public Button executeButton;
 
     @FXML public ChoiceBox<String> languageChoiceBox;
 
@@ -77,83 +60,19 @@ public class MainController implements Initializable {
     @FXML public TableColumn<HumanBeing, WeaponType> weaponTypeColumn;
     @FXML public TableColumn<HumanBeing, Mood> moodColumn;
     @FXML public TableColumn<HumanBeing, Car> carColumn;
+
     @FXML public Button insertButton;
+    @FXML public Button clearButton;
+    @FXML public Button removeLowerButton;
+    @FXML public Button removeGreaterButton;
+    @FXML public Button infoButton;
+    @FXML public Button saveCollectionButton;
+    @FXML public Button averageButton;
+    @FXML public Button maxButton;
+    @FXML public Button showButton;
 
-    private ObservableList<HumanBeing> list;
+    private final ObservableList<HumanBeing> list = FXCollections.observableList( new ArrayList<HumanBeing>() );
 
-
-    private ObservableList<HumanBeing> initialData(Hashtable<Integer, HumanBeing> collection) {
-        if (this.list == null) {
-            this.list = FXCollections.observableArrayList(collection.values());
-            UserData.list = this.list;
-        }
-        return this.list;
-    }
-
-    public void setData(Hashtable<Integer, HumanBeing> collection) {
-        this.mainTable.setItems(this.initialData(collection));
-    }
-
-    private void loadCommandChoiceBox() {
-        try (
-                BufferedReader bufferedReader = new BufferedReader(new FileReader("Files" + separator + "Help.txt"))
-        ) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                Pattern pattern = Pattern.compile("\\[[a-zA-Z]+]\\s[a-zA-Z_]+\\s(.+|\\{.+})\\s+-.+");
-                Matcher matcher = pattern.matcher(line);
-                if (matcher.find()) {
-                    String[] elements = matcher.group().split(" ");
-                    String command = elements[1];
-                    String info = elements[0];
-                    if (!(info.equals("[Client]") || info.equals("[Hybrid]")) && !command.equals("insert"))
-                        this.commandChoiceBox.getItems().add(command);
-                }
-            }
-        }
-        catch (FileNotFoundException e) {
-            logger.error(e.toString());
-            Platform.exit();
-        }
-        catch (Exception ignored) {}
-    }
-
-    private Hashtable<Integer, HumanBeing> getDataFromUserAfterAuthorization() {
-        Response response = UserData.clientWorking.work("show");
-        return response.getCollection();
-    }
-
-    @FXML
-    public void onExecute(ActionEvent actionEvent) {
-        String command = this.commandChoiceBox.getValue();
-        String arguments = this.argumentsTextField.getText();
-
-        if (command != null) {
-
-            String userCommand;
-            if (arguments == null || arguments.isEmpty()) userCommand = command;
-            else userCommand  = command + " " + "{" + arguments + "}";
-            Response response = UserData.clientWorking.work(userCommand);
-
-            Hashtable<Integer, HumanBeing> collection = response.getCollection();
-            HumanBeing humanBeing = response.getHumanBeing();
-
-            String message = response.getMessage();
-
-            if (humanBeing != null) {
-                this.list.clear();
-                this.list.add(humanBeing);
-            }
-
-            else if (collection != null) {
-                this.setData(collection);
-            }
-
-            if (message != null) {
-                this.messageFromServerLabel.setText(message);
-            }
-        }
-    }
 
     @FXML
     public void onHelp(ActionEvent actionEvent) {
@@ -173,6 +92,8 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        UserData.mainTable = mainTable;
+
         this.languageChoiceBox.setValue("English");
         this.languageChoiceBox.getItems().addAll("Русский", "Српски", "Latviski", "English");
 
@@ -189,11 +110,10 @@ public class MainController implements Initializable {
         this.moodColumn.setCellValueFactory(new PropertyValueFactory<>("mood"));
         this.carColumn.setCellValueFactory(new PropertyValueFactory<>("car"));
 
-        this.loadCommandChoiceBox();
-
-        Hashtable<Integer, HumanBeing> collection = this.getDataFromUserAfterAuthorization();
+        Hashtable<Integer, HumanBeing> collection = UserData.clientWorking.work("show").getCollection();
         if (collection != null) {
-            this.setData(collection);
+            this.list.addAll(collection.values());
+            this.mainTable.setItems(this.list);
         }
     }
 
@@ -220,17 +140,23 @@ public class MainController implements Initializable {
         this.moodColumn.setText(localizer.getValue("moodColumn"));
         this.carColumn.setText(localizer.getValue("carColumn"));
         this.currentUserLabel.setText(localizer.getValue("currentUser"));
-        this.commandLabel.setText(localizer.getValue("command"));
-        this.argumentsLabel.setText(localizer.getValue("arguments"));
-        this.executeButton.setText(localizer.getValue("execute"));
-        this.helpButton.setText(localizer.getValue("help"));
         this.languageLabel.setText(localizer.getValue("language"));
         this.messageLabel.setText(localizer.getValue("message"));
         this.saveButton.setText(localizer.getValue("save"));
+        this.saveCollectionButton.setText(localizer.getValue("save"));
+        this.helpButton.setText(localizer.getValue("help"));
+        this.removeLowerButton.setText(localizer.getValue("removeLower"));
+        this.removeGreaterButton.setText(localizer.getValue("removeGreater"));
+        this.infoButton.setText(localizer.getValue("save"));
+        this.infoButton.setText(localizer.getValue("info"));
+        this.showButton.setText(localizer.getValue("show"));
+        this.averageButton.setText(localizer.getValue("average"));
+        this.maxButton.setText(localizer.getValue("max"));
         this.insertButton.setText(localizer.getValue("insert"));
     }
 
-    private void getEditView() {
+    @FXML
+    public void onInsert(ActionEvent actionEvent) {
         try {
             Stage stage = new Stage();
             Scene scene = new Scene(Application.getFXMLLoader("edit-view.fxml").load());
@@ -242,7 +168,103 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    public void onInsert(ActionEvent actionEvent) {
-        this.getEditView();
+    public void onClear(ActionEvent actionEvent) {
+        Response response;
+
+        response = UserData.clientWorking.work("clear");
+        this.messageFromServerLabel.setText(response.getMessage());
+
+        UserData.mainTable.getItems().clear();
+    }
+
+    @FXML
+    public void onRemoveLowerButton(ActionEvent actionEvent) {
+        Response response;
+
+        response = UserData.clientWorking.work("remove_lower");
+        this.messageFromServerLabel.setText(response.getMessage());
+
+        Hashtable<Integer, HumanBeing> collection = UserData.clientWorking.work("show").getCollection();
+
+        if (collection != null) {
+            ObservableList<HumanBeing> list = FXCollections.observableList(new ArrayList<>());
+            list.addAll(collection.values());
+            UserData.mainTable.setItems(list);
+        }
+        else {
+            this.mainTable.getItems().clear();
+        }
+
+    }
+
+    @FXML
+    public void onRemoveGreater(ActionEvent actionEvent) {
+        Response response;
+
+        response = UserData.clientWorking.work("remove_greater");
+        this.messageFromServerLabel.setText(response.getMessage());
+
+        Hashtable<Integer, HumanBeing> collection = UserData.clientWorking.work("show").getCollection();
+
+        if (collection != null) {
+            ObservableList<HumanBeing> list = FXCollections.observableList(new ArrayList<>());
+            list.addAll(collection.values());
+            UserData.mainTable.setItems(list);
+        }
+        else {
+            this.mainTable.getItems().clear();
+        }
+    }
+
+    @FXML
+    public void onInfoButton(ActionEvent actionEvent) {
+        Response response;
+
+        response = UserData.clientWorking.work("info");
+        this.messageFromServerLabel.setText(response.getMessage());
+    }
+
+    @FXML
+    public void onSaveCollectionButton(ActionEvent actionEvent) {
+        Response response;
+
+        response = UserData.clientWorking.work("save");
+        this.messageFromServerLabel.setText(response.getMessage());
+    }
+
+    @FXML
+    public void onAverageButton(ActionEvent actionEvent) {
+        Response response;
+
+        response = UserData.clientWorking.work("average_of_impact_speed");
+        this.messageFromServerLabel.setText(response.getMessage());
+    }
+
+    @FXML
+    public void onMaxButton(ActionEvent actionEvent) {
+        Response response;
+
+        response = UserData.clientWorking.work("max_by_impact_speed");
+        this.messageFromServerLabel.setText(response.getMessage());
+        HumanBeing humanBeing = response.getHumanBeing();
+        if (humanBeing != null) {
+            ObservableList<HumanBeing> list = FXCollections.observableList(new ArrayList<>());
+            list.add(humanBeing);
+            UserData.mainTable.setItems(list);
+        }
+    }
+
+    @FXML
+    public void onShowButton(ActionEvent actionEvent) {
+        Hashtable<Integer, HumanBeing> collection = UserData.clientWorking.work("show").getCollection();
+
+        if (collection != null) {
+            ObservableList<HumanBeing> list = FXCollections.observableList(new ArrayList<>());
+            list.addAll(collection.values());
+            UserData.mainTable.setItems(list);
+        }
+        else {
+            this.mainTable.getItems().clear();
+        }
     }
 }
